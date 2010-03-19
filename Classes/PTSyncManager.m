@@ -40,6 +40,8 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
 {
   NSEntityDescription *entity = [modelKlass performSelector:@selector(entityFromContext:) withObject:managedObjectContext];
   
+  
+  // TODO it seems wrong that remoteId is hardcoded here, what if I want to use UUID instead?
   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteId in %@", [results valueForKeyPath:@"remoteId"]];
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
   [fetchRequest setEntity:entity];
@@ -48,6 +50,8 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   NSArray *managedObjectsForResults = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
   [fetchRequest release];
   
+  // the reason I'm munging this into dictionary keyed by remote ID is to make it easier
+  // to look up an existing NSManagedObject for a given record, perhaps there is a better way?
   NSMutableDictionary *managedObjectsByRemoteId = [NSMutableDictionary dictionary];
   for (NSManagedObject *object in managedObjectsForResults) {
     [managedObjectsByRemoteId setObject:object forKey:[object valueForKey:@"remoteId"]];
@@ -59,11 +63,11 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
     [record setManagedObject:managedObject isMaster:NO];
     
     if (record.managedObject == nil) {
+      // I've deliberately kept the generation of a new NSManagedObject using the factory method
+      // and the assignment to the record separate; what if the factory method moves elsewhere?
       record.managedObject = [[record newManagedObjectInContext:managedObjectContext entity:entity] autorelease];
     }
   }
-  NSLog(@"Records %@", results);
-  
   [managedObjectContext save:nil];
   
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerDidSyncNotification object:self];
