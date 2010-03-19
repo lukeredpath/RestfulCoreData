@@ -15,14 +15,14 @@
 		2899E5220DE3E06400AC0155 /* TrackerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* TrackerViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* TrackerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* TrackerViewController.m */; };
-		A339B3F21153C34800CA2BB5 /* PTSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A339B3F11153C34800CA2BB5 /* PTSyncManager.m */; };
-		A375BC5B1151C05E008BACC3 /* PTProject.m in Sources */ = {isa = PBXBuildFile; fileRef = A375BC5A1151C05E008BACC3 /* PTProject.m */; };
+		A339B5AE1153DD6400CA2BB5 /* PTProject.m in Sources */ = {isa = PBXBuildFile; fileRef = A339B5A81153DD6400CA2BB5 /* PTProject.m */; };
+		A339B5AF1153DD6400CA2BB5 /* PTSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A339B5AB1153DD6400CA2BB5 /* PTSyncManager.m */; };
+		A339B5B01153DD6400CA2BB5 /* PTTrackerRemoteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A339B5AD1153DD6400CA2BB5 /* PTTrackerRemoteModel.m */; };
 		A3EDBE4E1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBE4D1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m */; };
 		A3EDBF7611528281004DA6AB /* UIApplication+Directories.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBF7511528281004DA6AB /* UIApplication+Directories.m */; };
 		A3EDBF791152828D004DA6AB /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBF781152828D004DA6AB /* CoreDataManager.m */; };
 		A3EDBF7B11528296004DA6AB /* Tracker.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBF7A11528296004DA6AB /* Tracker.xcdatamodel */; };
 		A3EDBF7D115282A7004DA6AB /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3EDBF7C115282A7004DA6AB /* CoreData.framework */; };
-		A3EDBFD811528619004DA6AB /* PTTrackerRemoteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBFD711528619004DA6AB /* PTTrackerRemoteModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,11 +39,13 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Tracker_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracker_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Tracker-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tracker-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		A339B3F01153C34800CA2BB5 /* PTSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PTSyncManager.h; path = Classes/PTSyncManager.h; sourceTree = "<group>"; };
-		A339B3F11153C34800CA2BB5 /* PTSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PTSyncManager.m; path = Classes/PTSyncManager.m; sourceTree = "<group>"; };
-		A375BC591151C05E008BACC3 /* PTProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTProject.h; sourceTree = "<group>"; };
-		A375BC5A1151C05E008BACC3 /* PTProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTProject.m; sourceTree = "<group>"; };
-		A3EDBDE61151C448004DA6AB /* PTResultsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTResultsDelegate.h; sourceTree = "<group>"; };
+		A339B5A71153DD6400CA2BB5 /* PTProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTProject.h; sourceTree = "<group>"; };
+		A339B5A81153DD6400CA2BB5 /* PTProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTProject.m; sourceTree = "<group>"; };
+		A339B5A91153DD6400CA2BB5 /* PTResultsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTResultsDelegate.h; sourceTree = "<group>"; };
+		A339B5AA1153DD6400CA2BB5 /* PTSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTSyncManager.h; sourceTree = "<group>"; };
+		A339B5AB1153DD6400CA2BB5 /* PTSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTSyncManager.m; sourceTree = "<group>"; };
+		A339B5AC1153DD6400CA2BB5 /* PTTrackerRemoteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTTrackerRemoteModel.h; sourceTree = "<group>"; };
+		A339B5AD1153DD6400CA2BB5 /* PTTrackerRemoteModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTTrackerRemoteModel.m; sourceTree = "<group>"; };
 		A3EDBE4C1151CB60004DA6AB /* NSArray+NSIndexPathLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+NSIndexPathLookup.h"; sourceTree = "<group>"; };
 		A3EDBE4D1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+NSIndexPathLookup.m"; sourceTree = "<group>"; };
 		A3EDBF7411528281004DA6AB /* UIApplication+Directories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Directories.h"; sourceTree = "<group>"; };
@@ -52,8 +54,6 @@
 		A3EDBF781152828D004DA6AB /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
 		A3EDBF7A11528296004DA6AB /* Tracker.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = Tracker.xcdatamodel; sourceTree = "<group>"; };
 		A3EDBF7C115282A7004DA6AB /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		A3EDBFD611528619004DA6AB /* PTTrackerRemoteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTTrackerRemoteModel.h; sourceTree = "<group>"; };
-		A3EDBFD711528619004DA6AB /* PTTrackerRemoteModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTTrackerRemoteModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +76,7 @@
 			children = (
 				A3EDBE4B1151CB3A004DA6AB /* Categories */,
 				A3EDBE311151C6DE004DA6AB /* Helpers */,
-				A375BC411151BF03008BACC3 /* Data Model */,
+				A375BC411151BF03008BACC3 /* Classes */,
 				1D3623240D0F684500981E51 /* TrackerAppDelegate.h */,
 				1D3623250D0F684500981E51 /* TrackerAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* TrackerViewController.h */,
@@ -136,19 +136,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A375BC411151BF03008BACC3 /* Data Model */ = {
+		A375BC411151BF03008BACC3 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				A339B3F01153C34800CA2BB5 /* PTSyncManager.h */,
-				A339B3F11153C34800CA2BB5 /* PTSyncManager.m */,
-				A375BC591151C05E008BACC3 /* PTProject.h */,
-				A375BC5A1151C05E008BACC3 /* PTProject.m */,
-				A3EDBDE61151C448004DA6AB /* PTResultsDelegate.h */,
-				A3EDBFD611528619004DA6AB /* PTTrackerRemoteModel.h */,
-				A3EDBFD711528619004DA6AB /* PTTrackerRemoteModel.m */,
+				A339B5A71153DD6400CA2BB5 /* PTProject.h */,
+				A339B5A81153DD6400CA2BB5 /* PTProject.m */,
+				A339B5A91153DD6400CA2BB5 /* PTResultsDelegate.h */,
+				A339B5AA1153DD6400CA2BB5 /* PTSyncManager.h */,
+				A339B5AB1153DD6400CA2BB5 /* PTSyncManager.m */,
+				A339B5AC1153DD6400CA2BB5 /* PTTrackerRemoteModel.h */,
+				A339B5AD1153DD6400CA2BB5 /* PTTrackerRemoteModel.m */,
 			);
-			name = "Data Model";
-			path = ..;
+			name = Classes;
 			sourceTree = "<group>";
 		};
 		A3EDBE311151C6DE004DA6AB /* Helpers */ = {
@@ -228,13 +227,13 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* TrackerAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* TrackerViewController.m in Sources */,
-				A375BC5B1151C05E008BACC3 /* PTProject.m in Sources */,
 				A3EDBE4E1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m in Sources */,
 				A3EDBF7611528281004DA6AB /* UIApplication+Directories.m in Sources */,
 				A3EDBF791152828D004DA6AB /* CoreDataManager.m in Sources */,
 				A3EDBF7B11528296004DA6AB /* Tracker.xcdatamodel in Sources */,
-				A3EDBFD811528619004DA6AB /* PTTrackerRemoteModel.m in Sources */,
-				A339B3F21153C34800CA2BB5 /* PTSyncManager.m in Sources */,
+				A339B5AE1153DD6400CA2BB5 /* PTProject.m in Sources */,
+				A339B5AF1153DD6400CA2BB5 /* PTSyncManager.m in Sources */,
+				A339B5B01153DD6400CA2BB5 /* PTTrackerRemoteModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
