@@ -17,6 +17,16 @@
 @synthesize managedObjectContext;
 @synthesize syncManager;
 
+#pragma mark -
+
+- (void)dealloc 
+{
+  [projects release];
+  [managedObjectContext release];
+  [syncManager release];
+  [super dealloc];
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder;
 {
   if (self = [super initWithCoder:aDecoder]) {
@@ -24,6 +34,14 @@
   }
   return self;
 }
+
+- (void)didReceiveMemoryWarning 
+{
+  [super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+#pragma mark View methods
 
 - (void)viewDidLoad {
   self.tableView.rowHeight = 54;
@@ -39,6 +57,14 @@
   [super viewDidLoad];
 }
 
+- (void)viewDidUnload 
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:self];
+}
+
+#pragma mark -
+#pragma mark Data management
+
 - (void)refreshRemote;
 {
   [self.syncManager synchronizeRemote:[PTProject class]];
@@ -49,22 +75,8 @@
   self.projects = [PTProject findAll:self.managedObjectContext];
 }
 
-- (void)didReceiveMemoryWarning {
-  [super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload 
-{
-  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:self];
-}
-
-- (void)dealloc 
-{
-  [projects release];
-  [managedObjectContext release];
-  [syncManager release];
-  [super dealloc];
-}
+#pragma mark -
+#pragma mark Notifications
 
 - (void)syncManagerDidSync:(NSNotification *)note;
 {
