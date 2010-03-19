@@ -10,6 +10,7 @@
 
 @class TrackerViewController;
 @class PTSyncManager;
+@class CoreDataManager;
 
 extern NSString *const PTTrackerSynchingObjectContext;
 
@@ -17,12 +18,14 @@ extern NSString *const PTTrackerSynchingObjectContext;
   UIWindow *window;
   UINavigationController *navigationController;
   TrackerViewController *viewController;
+  CoreDataManager *coreDataManager;
   PTSyncManager *syncManager;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 @property (nonatomic, retain) IBOutlet TrackerViewController *viewController;
+@property (nonatomic, retain) IBOutlet CoreDataManager *coreDataManager;
 @property (nonatomic, retain) PTSyncManager *syncManager;
 
 @end

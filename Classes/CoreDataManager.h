@@ -11,8 +11,6 @@
   NSString *defaultContextKey;
   NSPersistentStoreCoordinator *persistentStoreCoordinator;
 }
-+ (id)sharedManager;
-
 @property (nonatomic, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 - (void)prepareForExit;

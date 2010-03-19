@@ -90,21 +90,4 @@ static NSString *CoreDataManagerDefaultContextKey = @"CoreDataManagerDefaultCont
   return coordinator;
 }
 
-#pragma mark -
-#pragma mark Singleton boilerplate
-
-static id sharedManager = nil;
-
-+ (void)initialize 
-{
-  if (self == [CoreDataManager class]) {
-    sharedManager = [[self alloc] init];
-  }
-}
-
-+ (id)sharedManager 
-{
-  return sharedManager;
-}
-
 @end

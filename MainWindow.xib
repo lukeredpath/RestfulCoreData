@@ -12,7 +12,6 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="31"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -36,6 +35,7 @@
 				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
 			</object>
 			<object class="IBUICustomObject" id="664661524"/>
+			<object class="IBUICustomObject" id="670979419"/>
 			<object class="IBUIWindow" id="117978783">
 				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
@@ -65,9 +65,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 						</object>
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="244635642">
-							<reference key="IBUINavigationBar"/>
 							<string key="IBUITitle">Your Projects</string>
-							<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="867486626">
+							<object class="IBUIBarButtonItem" key="IBUILeftBarButtonItem" id="662230028">
 								<int key="IBUIStyle">1</int>
 								<int key="IBUISystemItemIdentifier">13</int>
 							</object>
@@ -118,10 +117,18 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">refreshRemote</string>
-						<reference key="source" ref="867486626"/>
+						<reference key="source" ref="662230028"/>
 						<reference key="destination" ref="943309135"/>
 					</object>
 					<int key="connectionID">32</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">coreDataManager</string>
+						<reference key="source" ref="664661524"/>
+						<reference key="destination" ref="670979419"/>
+					</object>
+					<int key="connectionID">34</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -184,14 +191,19 @@
 						<reference key="object" ref="244635642"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="867486626"/>
+							<reference ref="662230028"/>
 						</object>
 						<reference key="parent" ref="943309135"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">31</int>
-						<reference key="object" ref="867486626"/>
+						<reference key="object" ref="662230028"/>
 						<reference key="parent" ref="244635642"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">33</int>
+						<reference key="object" ref="670979419"/>
+						<reference key="parent" ref="0"/>
 					</object>
 				</object>
 			</object>
@@ -212,6 +224,8 @@
 					<string>3.CustomClassName</string>
 					<string>3.IBPluginDependency</string>
 					<string>31.IBPluginDependency</string>
+					<string>33.CustomClassName</string>
+					<string>33.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -227,6 +241,8 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>TrackerAppDelegate</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>CoreDataManager</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -246,11 +262,19 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">32</int>
+			<int key="maxID">34</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">CoreDataManager</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/CoreDataManager.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">TrackerAppDelegate</string>
 					<string key="superclassName">NSObject</string>
@@ -258,12 +282,14 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>coreDataManager</string>
 							<string>navigationController</string>
 							<string>viewController</string>
 							<string>window</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>CoreDataManager</string>
 							<string>UINavigationController</string>
 							<string>TrackerViewController</string>
 							<string>UIWindow</string>

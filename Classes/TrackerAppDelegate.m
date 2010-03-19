@@ -13,6 +13,7 @@
 #import "PTTrackerRemoteModel.h"
 #import "PTProject.h"
 
+
 NSString *const PTTrackerSynchingObjectContext = @"TrackerSynchingObjectContext";
 
 @implementation TrackerAppDelegate
@@ -20,26 +21,26 @@ NSString *const PTTrackerSynchingObjectContext = @"TrackerSynchingObjectContext"
 @synthesize window;
 @synthesize navigationController;
 @synthesize viewController;
+@synthesize coreDataManager;
 @synthesize syncManager;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
   [PTTrackerRemoteModel setAPIKey:PT_API_KEY];
   
-  NSPersistentStoreCoordinator *coordinator = [CoreDataManager newPersistentStoreCoordinatorForModel:[NSManagedObjectModel mergedModelFromBundles:nil] withStoreType:NSSQLiteStoreType storePath:@"Tracker.sqlite"];
-  [[CoreDataManager sharedManager] setPersistentStoreCoordinator:coordinator];
-  [coordinator release];
+  self.coreDataManager.persistentStoreCoordinator = [CoreDataManager newPersistentStoreCoordinatorForModel:[NSManagedObjectModel mergedModelFromBundles:nil] withStoreType:NSSQLiteStoreType storePath:@"Tracker.sqlite"];
   
-  [[CoreDataManager sharedManager] registerDefaultManagedObjectContext];
+  [self.coreDataManager registerDefaultManagedObjectContext];
   
-  NSManagedObjectContext *syncContext = [[CoreDataManager sharedManager] 
-    registerNewManagedObjectContextForKey:PTTrackerSynchingObjectContext isDefault:NO];
+  NSManagedObjectContext *syncContext = [self.coreDataManager
+    registerNewManagedObjectContextForKey:PTTrackerSynchingObjectContext 
+                                isDefault:NO];
   
   syncManager = [[PTSyncManager alloc] initWithManagedObjectContext:syncContext];
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncManagerWillSync:) name:PTSyncManagerWillSyncNotification object:self.syncManager];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncManagerDidSync:)  name:PTSyncManagerDidSyncNotification object:self.syncManager];
 
-  viewController.managedObjectContext = [[CoreDataManager sharedManager] defaultManagedObjectContext];
+  viewController.managedObjectContext = [self.coreDataManager defaultManagedObjectContext];
   viewController.syncManager = self.syncManager;
   
   [window addSubview:navigationController.view];
@@ -49,6 +50,7 @@ NSString *const PTTrackerSynchingObjectContext = @"TrackerSynchingObjectContext"
 - (void)dealloc 
 {
   [navigationController release];
+  [coreDataManager release];
   [syncManager release];
   [viewController release];
   [window release];
