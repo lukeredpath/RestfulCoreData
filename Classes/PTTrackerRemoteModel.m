@@ -8,31 +8,39 @@
 
 #import "PTTrackerRemoteModel.h"
 
-@interface PTTrackerRemoteModel ()
-+ (NSDictionary *)defaultHeaders;
-@end
 
 @implementation PTTrackerRemoteModel
 
 @synthesize remoteId;
 @synthesize managedObject;
 
+static NSString *apiKey;
+
 + (void)initialize {
   [self setDelegate:self];
   [self setBaseURL:[NSURL URLWithString:@"http://www.pivotaltracker.com/services/v3"]];
   [self setFormat:HRDataFormatXML];
-  [self setHeaders:[self defaultHeaders]];
-}
-
-+ (NSDictionary *)defaultHeaders;
-{
-  return [NSDictionary dictionaryWithObject:@"755d2e48596d604c07cb88d4176d8414" forKey:@"X-TrackerToken"];
+  
+  if (apiKey != nil) {
+    [self setHeaders:[NSDictionary dictionaryWithObject:apiKey forKey:@"X-TrackerToken"]];
+  }
 }
 
 - (NSManagedObject *)newManagedObjectInContext:(NSManagedObjectContext *)context entity:(NSEntityDescription *)entity;
 {
   return [[NSManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
 }
+
+#pragma mark -
+#pragma mark Configuration
+
++ (void)setAPIKey:(NSString *)key;
+{
+  apiKey = [key copy];
+}
+
+#pragma mark -
+#pragma mark NSManagedObject synching
 
 - (void)setManagedObject:(NSManagedObject *)object isMaster:(BOOL)isMaster;
 {

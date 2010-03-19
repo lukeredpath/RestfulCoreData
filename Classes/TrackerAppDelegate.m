@@ -10,6 +10,8 @@
 #import "TrackerViewController.h"
 #import "CoreDataManager.h"
 #import "PTSyncManager.h"
+#import "PTTrackerRemoteModel.h"
+#import "PTProject.h"
 
 NSString *const PTTrackerSynchingObjectContext = @"TrackerSynchingObjectContext";
 
@@ -21,6 +23,8 @@ NSString *const PTTrackerSynchingObjectContext = @"TrackerSynchingObjectContext"
 @synthesize syncManager;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
+  [PTTrackerRemoteModel setAPIKey:@"YOUR_API_KEY_GOES_HERE"];
+  
   NSPersistentStoreCoordinator *coordinator = [CoreDataManager newPersistentStoreCoordinatorForModel:[NSManagedObjectModel mergedModelFromBundles:nil] withStoreType:NSSQLiteStoreType storePath:@"Tracker.sqlite"];
   [[CoreDataManager sharedManager] setPersistentStoreCoordinator:coordinator];
   [coordinator release];

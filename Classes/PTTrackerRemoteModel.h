@@ -15,6 +15,8 @@
 @property (nonatomic, copy) NSString *remoteId;
 @property (nonatomic, retain) NSManagedObject *managedObject;
 
++ (void)setAPIKey:(NSString *)apiKey;
+
 - (NSManagedObject *)newManagedObjectInContext:(NSManagedObjectContext *)context entity:(NSEntityDescription *)entity;
 - (void)setManagedObject:(NSManagedObject *)object isMaster:(BOOL)isMaster;
 - (void)syncManagedObjectToSelf:(NSManagedObject *)_managedObject;
