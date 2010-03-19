@@ -57,6 +57,11 @@ NSString *const PTTrackerSynchingObjectContext = @"TrackerSynchingObjectContext"
   [super dealloc];
 }
 
+- (void)applicationWillTerminate:(UIApplication *)application;
+{
+  [self.coreDataManager prepareForExit];
+}
+
 #pragma mark -
 #pragma mark PTSyncManager network activity indication
 
