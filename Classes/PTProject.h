@@ -16,7 +16,7 @@
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *account;
 
-+ (NSArray *)findInContext:(NSManagedObjectContext *)inContext predicate:(NSPredicate *)predicate;
-
+- (id)initWithManagedObject:(NSManagedObject *)object;
+- (id)initWithRemoteDictionary:(NSDictionary *)dictionary;
 + (id)findAllRemote:(id<PTResultsDelegate>)resultsDelegate;
 @end

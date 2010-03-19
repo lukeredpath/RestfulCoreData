@@ -16,11 +16,11 @@
 @property (nonatomic, retain) NSManagedObject *managedObject;
 @property (nonatomic, readonly) NSString *entityName;
 
++ (NSString *)entityName;
+
 + (void)setAPIKey:(NSString *)apiKey;
 
 - (void)setManagedObject:(NSManagedObject *)object isMaster:(BOOL)isMaster;
 - (void)syncManagedObjectToSelf:(NSManagedObject *)object;
 - (void)syncSelfToManagedObject:(NSManagedObject *)object;
-
-+ (NSArray *)findAll:(NSManagedObjectContext *)inContext;
 @end

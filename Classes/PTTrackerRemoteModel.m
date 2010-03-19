@@ -75,14 +75,6 @@ static NSString *apiKey;
 }
 
 #pragma mark -
-#pragma mark Queries
-
-+ (NSArray *)findAll:(NSManagedObjectContext *)inContext;
-{
-  return [self findInContext:inContext predicate:nil];
-}
-
-#pragma mark -
 #pragma mark Default HRRestConnection delegate methods
 
 + (void)restConnection:(NSURLConnection *)connection didFailWithError:(NSError *)error object:(id)object 

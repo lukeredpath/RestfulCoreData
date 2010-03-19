@@ -8,31 +8,24 @@
 
 #import "TrackerViewController.h"
 #import "NSArray+NSIndexPathLookup.h"
+#import "NSManagedObjectContext+Helpers.h"
 #import "PTProject.h"
 #import "PTSyncManager.h"
 
 @implementation TrackerViewController
 
-@synthesize projects;
 @synthesize managedObjectContext;
+@synthesize fetchedResultsController;
 @synthesize syncManager;
 
 #pragma mark -
 
 - (void)dealloc 
 {
-  [projects release];
+  [fetchedResultsController release];
   [managedObjectContext release];
   [syncManager release];
   [super dealloc];
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder;
-{
-  if (self = [super initWithCoder:aDecoder]) {
-    projects = [[NSArray alloc] init];
-  }
-  return self;
 }
 
 - (void)didReceiveMemoryWarning 
@@ -72,7 +65,36 @@
 
 - (void)findProjects;
 {
-  self.projects = [PTProject findAll:self.managedObjectContext];
+  if (fetchedResultsController == nil) {
+    NSFetchRequest *projectsFetchRequest = [[NSFetchRequest alloc] init];
+    [projectsFetchRequest setEntity:[self.managedObjectContext entityDescriptionForName:[PTProject entityName]]];
+    
+    NSSortDescriptor *nameSort = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    NSSortDescriptor *accountSort = [[NSSortDescriptor alloc] initWithKey:@"account" ascending:YES];
+    [projectsFetchRequest setSortDescriptors:[NSArray arrayWithObjects:accountSort, nameSort, nil]];
+      
+    fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:projectsFetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"account" cacheName:@"Projects"];
+    fetchedResultsController.delegate = self;
+    
+    [nameSort release];
+    [accountSort release];
+    [projectsFetchRequest release];
+  }
+  
+  [fetchedResultsController performFetch:nil];
+}
+
+/*
+ it seems the only issue when using NSFetchedResultsController is that we
+ want to deal with our model object, not the raw NSManagedObject. For now, this
+ seems like a reasonable workaround, even if we are creating and autoreleasing 
+ an object each time we call this method. We could cache this if performance
+ was an issue.
+*/
+- (id)objectAtIndexPath:(NSIndexPath *)indexPath;
+{
+  PTProject *project = [[PTProject alloc] initWithManagedObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+  return [project autorelease];
 }
 
 #pragma mark -
@@ -81,7 +103,10 @@
 - (void)syncManagerDidSync:(NSNotification *)note;
 {
   [managedObjectContext mergeChangesFromContextDidSaveNotification:note];
-  [self findProjects];
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
   [self.tableView reloadData];
 }
 
@@ -96,7 +121,7 @@ static NSString *ProjectCellIdentifier = @"ProjectCellIdentifier";
   if (cell == nil) {
     cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ProjectCellIdentifier] autorelease];
   }  
-  PTProject *project = [projects objectAtIndexPath:indexPath];
+  PTProject *project = [self objectAtIndexPath:indexPath];
 
   cell.textLabel.text = project.name;
   cell.detailTextLabel.text = project.account;
@@ -105,9 +130,21 @@ static NSString *ProjectCellIdentifier = @"ProjectCellIdentifier";
   return cell;
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
+{
+  return self.fetchedResultsController.sections.count;
+}
+
 - (NSInteger)tableView:(UITableView *)table numberOfRowsInSection:(NSInteger)section;
 {
-  return self.projects.count;
+  id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex:section];
+  return [sectionInfo numberOfObjects];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section 
+{ 
+  id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex:section];
+  return [sectionInfo name];
 }
 
 @end

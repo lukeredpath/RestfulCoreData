@@ -67,27 +67,7 @@
 }
 
 #pragma mark -
-#pragma mark Queries
-
-+ (NSArray *)findInContext:(NSManagedObjectContext *)inContext predicate:(NSPredicate *)predicate;
-{
-  NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-  [fetchRequest setEntity:[NSEntityDescription entityForName:self.entityName inManagedObjectContext:inContext]];
-  [fetchRequest setPredicate:predicate];
-  
-  NSArray *results = [inContext executeFetchRequest:fetchRequest error:nil];
-  [fetchRequest release];
-  
-  NSMutableArray *projects = [NSMutableArray arrayWithCapacity:results.count];
-  
-  for (NSManagedObject *object in results) {
-    PTProject *project = [[PTProject alloc] initWithManagedObject:object];
-    [projects addObject:project];
-    [project release];
-  }
-  
-  return projects;
-}
+#pragma mark Remote access
 
 + (id)findAllRemote:(id<PTResultsDelegate>)resultsDelegate;
 {
