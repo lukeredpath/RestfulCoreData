@@ -46,6 +46,7 @@
 		A339B5AB1153DD6400CA2BB5 /* PTSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTSyncManager.m; sourceTree = "<group>"; };
 		A339B5AC1153DD6400CA2BB5 /* PTTrackerRemoteModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTTrackerRemoteModel.h; sourceTree = "<group>"; };
 		A339B5AD1153DD6400CA2BB5 /* PTTrackerRemoteModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTTrackerRemoteModel.m; sourceTree = "<group>"; };
+		A339B6051153E0D300CA2BB5 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A3EDBE4C1151CB60004DA6AB /* NSArray+NSIndexPathLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+NSIndexPathLookup.h"; sourceTree = "<group>"; };
 		A3EDBE4D1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+NSIndexPathLookup.m"; sourceTree = "<group>"; };
 		A3EDBF7411528281004DA6AB /* UIApplication+Directories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Directories.h"; sourceTree = "<group>"; };
@@ -110,6 +111,7 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* Tracker_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				A339B6051153E0D300CA2BB5 /* Constants.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
