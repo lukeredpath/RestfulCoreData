@@ -9,6 +9,7 @@
 #import "PTSyncManager.h"
 #import "PTTrackerRemoteModel.h"
 #import "NSManagedObjectContext+Helpers.h"
+#import "NSManagedObjectContext+SimpleFetches.h"
 
 NSString *const PTSyncManagerWillSyncNotification = @"PTSyncManagerWillSyncNotification";
 NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotification";
@@ -50,21 +51,14 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   
   // TODO it seems wrong that remoteId is hardcoded here, what if I want to use UUID instead?
   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteId in %@", [results valueForKeyPath:@"remoteId"]];
-  NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-  [fetchRequest setEntity:entity];
-  [fetchRequest setPredicate:predicate];
-  
-  NSSet *managedObjectsForResultsSet = [NSSet setWithArray:[managedObjectContext executeFetchRequest:fetchRequest error:nil]];
-  [fetchRequest release];
+  NSSet *managedObjectsForResultsSet = [[NSSet alloc] initWithArray:
+    [managedObjectContext fetchAllOfEntity:entity predicate:predicate error:nil]];
   
   // delete all objects that no longer exist on the server
-  NSFetchRequest *fetchRequestForAll = [[NSFetchRequest alloc] init];
-  [fetchRequestForAll setEntity:entity];  
-  NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequestForAll error:nil];
-  [fetchRequestForAll release];
-  
-  NSMutableSet *allObjectSet = [[NSMutableSet alloc] initWithArray:fetchResults];
+  NSMutableSet *allObjectSet = [[NSMutableSet alloc] initWithArray:
+    [managedObjectContext fetchAllOfEntity:entity error:nil]];
   [allObjectSet minusSet:managedObjectsForResultsSet];
+  
   for (NSManagedObject *object in allObjectSet) {
     [managedObjectContext deleteObject:object];
   }
