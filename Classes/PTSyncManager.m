@@ -50,13 +50,14 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   NSEntityDescription *entity = [managedObjectContext entityDescriptionForName:entityName];
   
   // TODO it seems wrong that remoteId is hardcoded here, what if I want to use UUID instead?
-  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteId in %@", [results valueForKeyPath:@"remoteId"]];
+  NSPredicate *matchingIdPredicate = [NSPredicate predicateWithFormat:@"remoteId in %@", [results valueForKeyPath:@"remoteId"]];
   NSSet *managedObjectsForResultsSet = [[NSSet alloc] initWithArray:
-    [managedObjectContext fetchAllOfEntity:entity predicate:predicate error:nil]];
+    [managedObjectContext fetchAllOfEntity:entity predicate:matchingIdPredicate error:nil]];
   
   // delete all objects that no longer exist on the server
+  NSPredicate *hasRemoteIdPredicate = [NSPredicate predicateWithFormat:@"remoteId <> NIL"];
   NSMutableSet *allObjectSet = [[NSMutableSet alloc] initWithArray:
-    [managedObjectContext fetchAllOfEntity:entity error:nil]];
+    [managedObjectContext fetchAllOfEntity:entity predicate:hasRemoteIdPredicate error:nil]];
   [allObjectSet minusSet:managedObjectsForResultsSet];
   
   for (NSManagedObject *object in allObjectSet) {
