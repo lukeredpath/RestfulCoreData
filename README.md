@@ -1,5 +1,5 @@
 # Project overview
-This app uses the Pivotal Tracker[1] API to explore synching data from a remote API
+This app uses the [Pivotal Tracker][1] API to explore synching data from a remote API
 to a local CoreData store.
 
 ## Requirements
@@ -12,7 +12,7 @@ build without this) and add the following line to it
 Obviously if this was a real app, the API key would be obtained via user input instead,
 but this isn't a *real* app, is it?
 
-You'll also need the latest version of the HTTPRiot[2] library, which should be copied
+You'll also need the latest version of the [HTTPRiot][2] library, which should be copied
 to ~/Library/SDKs.
 
 ## What is the point?
@@ -24,5 +24,5 @@ I'm using the HTTPRiot to access the API as its an awesome library for interacti
 JSON/XML REST APIs. There is a degree of coupling to its HRRestModel class at the moment
 but that can be refactored away; its not that important right now.
 
-[1] http://pivotaltracker.com
-[1] http://labratrevenge.com/httpriot/docs/
+[1]: http://pivotaltracker.com
+[2]: http://labratrevenge.com/httpriot/docs/
