@@ -20,6 +20,8 @@
 		A339B5B01153DD6400CA2BB5 /* PTTrackerRemoteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A339B5AD1153DD6400CA2BB5 /* PTTrackerRemoteModel.m */; };
 		A339B6861153F23C00CA2BB5 /* NSManagedObjectContext+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A339B6851153F23C00CA2BB5 /* NSManagedObjectContext+Helpers.m */; };
 		A339B6C51153F50D00CA2BB5 /* NSManagedObjectContext+SimpleFetches.m in Sources */ = {isa = PBXBuildFile; fileRef = A339B6C41153F50D00CA2BB5 /* NSManagedObjectContext+SimpleFetches.m */; };
+		A339B7781153FD6000CA2BB5 /* NewProjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = A339B7771153FD6000CA2BB5 /* NewProjectController.m */; };
+		A339B77C1153FDCC00CA2BB5 /* NewProjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A339B77B1153FDCC00CA2BB5 /* NewProjectView.xib */; };
 		A3EDBE4E1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBE4D1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m */; };
 		A3EDBF7611528281004DA6AB /* UIApplication+Directories.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBF7511528281004DA6AB /* UIApplication+Directories.m */; };
 		A3EDBF791152828D004DA6AB /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBF781152828D004DA6AB /* CoreDataManager.m */; };
@@ -53,6 +55,9 @@
 		A339B6851153F23C00CA2BB5 /* NSManagedObjectContext+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Helpers.m"; sourceTree = "<group>"; };
 		A339B6C31153F50D00CA2BB5 /* NSManagedObjectContext+SimpleFetches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+SimpleFetches.h"; sourceTree = "<group>"; };
 		A339B6C41153F50D00CA2BB5 /* NSManagedObjectContext+SimpleFetches.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+SimpleFetches.m"; sourceTree = "<group>"; };
+		A339B7761153FD6000CA2BB5 /* NewProjectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewProjectController.h; sourceTree = "<group>"; };
+		A339B7771153FD6000CA2BB5 /* NewProjectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewProjectController.m; sourceTree = "<group>"; };
+		A339B77B1153FDCC00CA2BB5 /* NewProjectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewProjectView.xib; sourceTree = "<group>"; };
 		A3EDBE4C1151CB60004DA6AB /* NSArray+NSIndexPathLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+NSIndexPathLookup.h"; sourceTree = "<group>"; };
 		A3EDBE4D1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+NSIndexPathLookup.m"; sourceTree = "<group>"; };
 		A3EDBF7411528281004DA6AB /* UIApplication+Directories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Directories.h"; sourceTree = "<group>"; };
@@ -81,13 +86,12 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				A375BC411151BF03008BACC3 /* Data Model */,
 				A3EDBE4B1151CB3A004DA6AB /* Categories */,
 				A3EDBE311151C6DE004DA6AB /* Helpers */,
-				A375BC411151BF03008BACC3 /* Classes */,
+				A339B7751153FD3C00CA2BB5 /* Controllers */,
 				1D3623240D0F684500981E51 /* TrackerAppDelegate.h */,
 				1D3623250D0F684500981E51 /* TrackerAppDelegate.m */,
-				28D7ACF60DDB3853001CB0EB /* TrackerViewController.h */,
-				28D7ACF70DDB3853001CB0EB /* TrackerViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -129,6 +133,7 @@
 				2899E5210DE3E06400AC0155 /* TrackerViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Tracker-Info.plist */,
+				A339B77B1153FDCC00CA2BB5 /* NewProjectView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -144,7 +149,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A375BC411151BF03008BACC3 /* Classes */ = {
+		A339B7751153FD3C00CA2BB5 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				28D7ACF60DDB3853001CB0EB /* TrackerViewController.h */,
+				28D7ACF70DDB3853001CB0EB /* TrackerViewController.m */,
+				A339B7761153FD6000CA2BB5 /* NewProjectController.h */,
+				A339B7771153FD6000CA2BB5 /* NewProjectController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		A375BC411151BF03008BACC3 /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
 				A339B5A71153DD6400CA2BB5 /* PTProject.h */,
@@ -155,7 +171,7 @@
 				A339B5AC1153DD6400CA2BB5 /* PTTrackerRemoteModel.h */,
 				A339B5AD1153DD6400CA2BB5 /* PTTrackerRemoteModel.m */,
 			);
-			name = Classes;
+			name = "Data Model";
 			sourceTree = "<group>";
 		};
 		A3EDBE311151C6DE004DA6AB /* Helpers */ = {
@@ -226,6 +242,7 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* TrackerViewController.xib in Resources */,
+				A339B77C1153FDCC00CA2BB5 /* NewProjectView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +265,7 @@
 				A339B5B01153DD6400CA2BB5 /* PTTrackerRemoteModel.m in Sources */,
 				A339B6861153F23C00CA2BB5 /* NSManagedObjectContext+Helpers.m in Sources */,
 				A339B6C51153F50D00CA2BB5 /* NSManagedObjectContext+SimpleFetches.m in Sources */,
+				A339B7781153FD6000CA2BB5 /* NewProjectController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

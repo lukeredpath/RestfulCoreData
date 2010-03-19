@@ -11,6 +11,7 @@
 #import "NSManagedObjectContext+Helpers.h"
 #import "PTProject.h"
 #import "PTSyncManager.h"
+#import "NewProjectController.h"
 
 @implementation TrackerViewController
 
@@ -95,6 +96,17 @@
 {
   PTProject *project = [[PTProject alloc] initWithManagedObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
   return [project autorelease];
+}
+
+#pragma mark -
+#pragma mark Actions
+
+- (IBAction)showNewProjectScreen;
+{
+  NewProjectController *newProjectController = [[NewProjectController alloc] init];
+  newProjectController.managedObjectContext = self.managedObjectContext;
+  [self.navigationController pushViewController:newProjectController animated:YES];
+  [newProjectController release];
 }
 
 #pragma mark -

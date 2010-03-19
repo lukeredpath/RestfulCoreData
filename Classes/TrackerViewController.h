@@ -21,7 +21,9 @@
 @property (nonatomic, retain) PTSyncManager *syncManager;
 
 - (void)findProjects;
-- (IBAction)refreshRemote;
 - (id)objectAtIndexPath:(NSIndexPath *)indexPath;
+
+- (IBAction)refreshRemote;
+- (IBAction)showNewProjectScreen;
 @end
 
