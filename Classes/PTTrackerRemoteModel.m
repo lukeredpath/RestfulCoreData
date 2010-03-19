@@ -13,6 +13,7 @@
 
 @synthesize remoteId;
 @synthesize managedObject;
+@dynamic entityName;
 
 static NSString *apiKey;
 
@@ -29,6 +30,16 @@ static NSString *apiKey;
 - (NSManagedObject *)newManagedObjectInContext:(NSManagedObjectContext *)context entity:(NSEntityDescription *)entity;
 {
   return [[NSManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+}
+
++ (NSString *)entityName;
+{
+  return nil;
+}
+
+- (NSString *)entityName;
+{
+  return [[self class] entityName];
 }
 
 #pragma mark -

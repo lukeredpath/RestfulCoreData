@@ -8,6 +8,7 @@
 
 #import "PTSyncManager.h"
 #import "PTTrackerRemoteModel.h"
+#import "NSManagedObjectContext+Helpers.h"
 
 NSString *const PTSyncManagerWillSyncNotification = @"PTSyncManagerWillSyncNotification";
 NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotification";
@@ -44,7 +45,8 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
 
 - (void)remoteModel:(id)modelKlass didFinishLoading:(NSArray *)results;
 {
-  NSEntityDescription *entity = [modelKlass performSelector:@selector(entityFromContext:) withObject:managedObjectContext];
+  NSString *entityName = [modelKlass performSelector:@selector(entityName)];
+  NSEntityDescription *entity = [managedObjectContext entityDescriptionForName:entityName];
   
   // TODO it seems wrong that remoteId is hardcoded here, what if I want to use UUID instead?
   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteId in %@", [results valueForKeyPath:@"remoteId"]];
@@ -81,9 +83,8 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
     [record setManagedObject:managedObject isMaster:NO];
     
     if (record.managedObject == nil) {
-      // I've deliberately kept the generation of a new NSManagedObject using the factory method
-      // and the assignment to the record separate; what if the factory method moves elsewhere?
-      record.managedObject = [[record newManagedObjectInContext:managedObjectContext entity:entity] autorelease];
+      NSManagedObject *newObject = [managedObjectContext insertNewObjectForEntityWithName:record.entityName];
+      [record setManagedObject:newObject isMaster:NO];
     }
   }
   [managedObjectContext save:nil];

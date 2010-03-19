@@ -40,21 +40,14 @@
   return self;
 }
 
++ (NSString *)entityName;
+{
+  return @"Project";
+}
+
 - (NSString *)description;
 {
   return [NSString stringWithFormat:@"[PTProject id:%@ name:%@]", self.remoteId, self.name];
-}
-
-+ (NSEntityDescription *)entityFromContext:(NSManagedObjectContext *)context;
-{
-  return [NSEntityDescription entityForName:@"Project" inManagedObjectContext:context];
-}
-
-- (NSManagedObject *)newManagedObjectInContext:(NSManagedObjectContext *)context entity:(NSEntityDescription *)entity;
-{
-  NSManagedObject *object = [super newManagedObjectInContext:context entity:entity];
-  [self syncManagedObjectToSelf:object];
-  return object;
 }
 
 - (void)syncManagedObjectToSelf:(NSManagedObject *)object;
@@ -79,7 +72,7 @@
 + (NSArray *)findInContext:(NSManagedObjectContext *)inContext predicate:(NSPredicate *)predicate;
 {
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-  [fetchRequest setEntity:[PTProject entityFromContext:inContext]];
+  [fetchRequest setEntity:[NSEntityDescription entityForName:self.entityName inManagedObjectContext:inContext]];
   [fetchRequest setPredicate:predicate];
   
   NSArray *results = [inContext executeFetchRequest:fetchRequest error:nil];
