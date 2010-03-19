@@ -10,24 +10,17 @@
 #import "PTResultsDelegate.h"
 #import "PTTrackerRemoteModel.h"
 
-@interface PTProject : PTTrackerModelBase {
-
+@interface PTProject : PTTrackerRemoteModel {
+  NSString *name;
+  NSString *account;
 }
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *account;
-@property (nonatomic, copy) NSString *remoteId;
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
++ (NSEntityDescription *)entityFromContext:(NSManagedObjectContext *)context;
 
 + (NSArray *)findAll:(NSManagedObjectContext *)inContext;
-+ (NSArray *)findAllWithRemoteIds:(NSArray *)arrayOfRemoteIds inContext:(NSManagedObjectContext *)inContext;
-
 + (NSArray *)findInContext:(NSManagedObjectContext *)inContext predicate:(NSPredicate *)predicate;
 
-+ (id)findAllRemote:(id<PTResultsDelegate>)resultsDelegate insertIntoManagedObjectContext:(NSManagedObjectContext *)context;
-@end
-
-#pragma mark -
-
-@interface PTRemoteProject : PTTrackerRemoteModel
++ (id)findAllRemote:(id<PTResultsDelegate>)resultsDelegate;
 @end

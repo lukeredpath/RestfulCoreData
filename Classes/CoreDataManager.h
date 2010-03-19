@@ -19,8 +19,8 @@
 
 - (NSManagedObjectContext *)managedObjectContextForKey:(NSString *)key;
 - (NSManagedObjectContext *)defaultManagedObjectContext;
-- (void)registerNewManagedObjectContextForKey:(NSString *)key isDefault:(BOOL)isDefault;
-- (void)registerDefaultManagedObjectContext;
+- (NSManagedObjectContext *)registerNewManagedObjectContextForKey:(NSString *)key isDefault:(BOOL)isDefault;
+- (NSManagedObjectContext *)registerDefaultManagedObjectContext;
 
 + (id)newPersistentStoreCoordinatorForModel:(NSManagedObjectModel *)model withStoreType:(NSString *)storeType storePath:(NSString *)pathToStoreFile;
 @end

@@ -9,7 +9,14 @@
 #import <HTTPRiot/HRRestModel.h>
 
 @interface PTTrackerRemoteModel : HRRestModel {
-
+  NSString *remoteId;
+  NSManagedObject *managedObject;
 }
+@property (nonatomic, copy) NSString *remoteId;
+@property (nonatomic, retain) NSManagedObject *managedObject;
 
+- (NSManagedObject *)newManagedObjectInContext:(NSManagedObjectContext *)context entity:(NSEntityDescription *)entity;
+- (void)setManagedObject:(NSManagedObject *)object isMaster:(BOOL)isMaster;
+- (void)syncManagedObjectToSelf:(NSManagedObject *)_managedObject;
+- (void)syncSelfToManagedObject:(NSManagedObject *)_managedObject;
 @end

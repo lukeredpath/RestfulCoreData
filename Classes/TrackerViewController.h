@@ -9,11 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "PTResultsDelegate.h"
 
+@class PTSyncManager;
+
 @interface TrackerViewController : UITableViewController <PTResultsDelegate, UITableViewDataSource> {
   NSArray *projects;
   NSManagedObjectContext *managedObjectContext;
+  PTSyncManager *syncManager;
 }
 @property (nonatomic, retain) NSArray *projects;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) PTSyncManager *syncManager;
+
+- (void)findProjects;
+- (IBAction)refreshRemote;
 @end
 

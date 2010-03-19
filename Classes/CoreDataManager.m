@@ -53,7 +53,7 @@ static NSString *CoreDataManagerDefaultContextKey = @"CoreDataManagerDefaultCont
   return [managedObjectContexts objectForKey:defaultContextKey];
 }
 
-- (void)registerNewManagedObjectContextForKey:(NSString *)key isDefault:(BOOL)isDefault;
+- (NSManagedObjectContext *)registerNewManagedObjectContextForKey:(NSString *)key isDefault:(BOOL)isDefault;
 {
   NSAssert1(![managedObjectContexts.allKeys containsObject:key], 
           @"Duplicate key, managed object context already registered for key %@", key);
@@ -69,11 +69,12 @@ static NSString *CoreDataManagerDefaultContextKey = @"CoreDataManagerDefaultCont
   if (isDefault == YES) {
     defaultContextKey = [key copy];
   }
+  return [managedObjectContexts objectForKey:key];
 }
 
-- (void)registerDefaultManagedObjectContext;
+- (NSManagedObjectContext *)registerDefaultManagedObjectContext;
 {
-  [self registerNewManagedObjectContextForKey:CoreDataManagerDefaultContextKey isDefault:YES];
+  return [self registerNewManagedObjectContextForKey:CoreDataManagerDefaultContextKey isDefault:YES];
 }
 
 #pragma mark -

@@ -9,16 +9,21 @@
 #import <UIKit/UIKit.h>
 
 @class TrackerViewController;
+@class PTSyncManager;
 
 extern NSString *const PTTrackerSynchingObjectContext;
 
 @interface TrackerAppDelegate : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-    TrackerViewController *viewController;
+  UIWindow *window;
+  UINavigationController *navigationController;
+  TrackerViewController *viewController;
+  PTSyncManager *syncManager;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 @property (nonatomic, retain) IBOutlet TrackerViewController *viewController;
+@property (nonatomic, retain) PTSyncManager *syncManager;
 
 @end
 

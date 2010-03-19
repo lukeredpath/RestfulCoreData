@@ -10,21 +10,34 @@
 
 @implementation PTProject
 
-@dynamic remoteId;
-@dynamic name;
-@dynamic account;
+@synthesize name;
+@synthesize account;
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+- (void)dealloc;
 {
-  NSEntityDescription *entity = [NSEntityDescription entityForName:@"Project" inManagedObjectContext:managedObjectContext];
-  return [self initWithEntity:entity insertIntoManagedObjectContext:managedObjectContext];
+  [remoteId release];
+  [name release];
+  [account release];
+  [managedObject release];
+  [super dealloc];
 }
 
-- (void)updateFromRemoteDictionary:(NSDictionary *)dictionary;
+- (id)initWithManagedObject:(NSManagedObject *)object;
 {
-  self.remoteId = [dictionary valueForKey:@"id"];
-  self.name     = [dictionary valueForKey:@"name"];
-  self.account  = [dictionary valueForKey:@"account"];
+  if (self = [super init]) {
+    [self setManagedObject:object isMaster:YES];
+  }
+  return self;
+}
+
+- (id)initWithRemoteDictionary:(NSDictionary *)dictionary;
+{
+  if (self = [super init]) {
+    self.remoteId = [dictionary valueForKey:@"id"];
+    self.name     = [dictionary valueForKey:@"name"];
+    self.account  = [dictionary valueForKey:@"account"];
+  }
+  return self;
 }
 
 - (NSString *)description;
@@ -37,18 +50,35 @@
   return [NSEntityDescription entityForName:@"Project" inManagedObjectContext:context];
 }
 
+- (NSManagedObject *)newManagedObjectInContext:(NSManagedObjectContext *)context entity:(NSEntityDescription *)entity;
+{
+  NSManagedObject *object = [super newManagedObjectInContext:context entity:entity];
+  [self syncManagedObjectToSelf:object];
+  return object;
+}
+
+- (void)syncManagedObjectToSelf:(NSManagedObject *)object;
+{
+  [super syncManagedObjectToSelf:object];
+  
+  [object setValue:self.name    forKey:@"name"];
+  [object setValue:self.account forKey:@"account"];
+}
+
+- (void)syncSelfToManagedObject:(NSManagedObject *)object;
+{
+  [super syncSelfToManagedObject:object];
+  
+  self.name    = [object valueForKey:@"name"];
+  self.account = [object valueForKey:@"account"];
+}
+
 #pragma mark -
 #pragma mark Queries
 
 + (NSArray *)findAll:(NSManagedObjectContext *)inContext;
 {
   return [self findInContext:inContext predicate:nil];
-}
-
-+ (NSArray *)findAllWithRemoteIds:(NSArray *)arrayOfRemoteIds inContext:(NSManagedObjectContext *)inContext;
-{
-  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteId in %@", arrayOfRemoteIds];
-  return [self findInContext:inContext predicate:predicate];
 }
 
 + (NSArray *)findInContext:(NSManagedObjectContext *)inContext predicate:(NSPredicate *)predicate;
@@ -60,54 +90,34 @@
   NSArray *results = [inContext executeFetchRequest:fetchRequest error:nil];
   [fetchRequest release];
   
-  return results;
+  NSMutableArray *projects = [NSMutableArray arrayWithCapacity:results.count];
+  
+  for (NSManagedObject *object in results) {
+    PTProject *project = [[PTProject alloc] initWithManagedObject:object];
+    [projects addObject:project];
+    [project release];
+  }
+  
+  return projects;
 }
 
-+ (id)findAllRemote:(id<PTResultsDelegate>)resultsDelegate insertIntoManagedObjectContext:(NSManagedObjectContext *)context;
++ (id)findAllRemote:(id<PTResultsDelegate>)resultsDelegate;
 {
-  NSDictionary *delegateObject = [[NSDictionary alloc] initWithObjects:
-    [NSArray arrayWithObjects:resultsDelegate, context, nil] forKeys:
-    [NSArray arrayWithObjects:@"resultsDelegate", @"resultsContext", nil]];
-                           
-  return [PTRemoteProject getPath:@"/projects" withOptions:nil object:delegateObject];
+                          
+  return [self getPath:@"/projects" withOptions:nil object:resultsDelegate];
 }
-
-@end
-
-#pragma mark -
-
-@implementation PTRemoteProject
 
 + (void)restConnection:(NSURLConnection *)connection didReturnResource:(id)resource object:(id)object { 
-  id<PTResultsDelegate> resultsDelegate = [object valueForKey:@"resultsDelegate"];
-  NSManagedObjectContext *managedObjectContext = [object valueForKey:@"resultsContext"];
+  NSMutableArray *projects = [[NSMutableArray alloc] init];
   
-  [object release];
-  
-  NSArray *remoteIds = [resource valueForKeyPath:@"projects.id"];
-  NSMutableArray *projects = [[PTProject findAllWithRemoteIds:remoteIds inContext:managedObjectContext] mutableCopy];
-
   for(id item in [resource objectForKey:@"projects"]) {
-    NSPredicate *predicateForExisting = [NSPredicate predicateWithFormat:@"remoteId == %@", [item valueForKey:@"id"]];
-    
-    PTProject *project;
-    
-    NSArray *candidates = [projects filteredArrayUsingPredicate:predicateForExisting];
-    if (candidates.count == 1) {
-      project = [candidates objectAtIndex:0];
-    } else {
-      project = [[PTProject alloc] initWithManagedObjectContext:managedObjectContext];
-      [projects addObject:project];
-      [project release];
-    }
-    [project updateFromRemoteDictionary:item];
+    PTProject *project = [[PTProject alloc] initWithRemoteDictionary:item];
+    [projects addObject:project];
+    [project release];
   }
-  [managedObjectContext save:nil];
   
-  [resultsDelegate remoteModel:self didFinishLoading:projects];
+  [(id<PTResultsDelegate>)object remoteModel:self didFinishLoading:projects];
   [projects release];
 }
 
 @end
-
-

@@ -9,11 +9,13 @@
 #import "TrackerViewController.h"
 #import "NSArray+NSIndexPathLookup.h"
 #import "PTProject.h"
+#import "PTSyncManager.h"
 
 @implementation TrackerViewController
 
 @synthesize projects;
 @synthesize managedObjectContext;
+@synthesize syncManager;
 
 - (id)initWithCoder:(NSCoder *)aDecoder;
 {
@@ -26,35 +28,48 @@
 - (void)viewDidLoad {
   self.tableView.rowHeight = 54;
   
-  self.projects = [PTProject findAll:self.managedObjectContext];
-
-  if (self.projects.count > 0) {
-    [self.tableView reloadData];
-  }
+  [[NSNotificationCenter defaultCenter] 
+     addObserver:self selector:@selector(syncManagerDidSync:) 
+            name:NSManagedObjectContextDidSaveNotification
+          object:self.syncManager.managedObjectContext];
   
-  [PTProject findAllRemote:self insertIntoManagedObjectContext:self.managedObjectContext];
+  [self findProjects];  
+  [self refreshRemote];
   
   [super viewDidLoad];
+}
+
+- (void)refreshRemote;
+{
+  [self.syncManager synchronizeRemote:[PTProject class]];
+}
+
+- (void)findProjects;
+{
+  self.projects = [PTProject findAll:self.managedObjectContext];
 }
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
 }
 
-- (void)viewDidUnload {
-  
+- (void)viewDidUnload 
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:self];
 }
 
-- (void)dealloc {
+- (void)dealloc 
+{
+  [projects release];
+  [managedObjectContext release];
+  [syncManager release];
   [super dealloc];
 }
 
-#pragma mark -
-#pragma mark PTResultsDelegate protocol
-
-- (void)remoteModel:(id)modelKlass didFinishLoading:(NSArray *)results;
+- (void)syncManagerDidSync:(NSNotification *)note;
 {
-  self.projects = results;
+  [managedObjectContext mergeChangesFromContextDidSaveNotification:note];
+  [self findProjects];
   [self.tableView reloadData];
 }
 
