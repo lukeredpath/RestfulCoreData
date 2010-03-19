@@ -4,10 +4,10 @@ to a local CoreData store.
 
 ## Requirements
 To get it running you'll need a Pivotal Tracker account and an API key. Once you've
-got your key, create a Constants.h in the root of your project (the project will not
+got your key, create a `Constants.h` in the root of your project (the project will not
 build without this) and add the following line to it
 
-  #define PT_API_KEY @"YOUR_API_KEY"
+    #define PT_API_KEY @"YOUR_API_KEY"
 
 Obviously if this was a real app, the API key would be obtained via user input instead,
 but this isn't a *real* app, is it?
