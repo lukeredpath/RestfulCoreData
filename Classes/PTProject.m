@@ -76,11 +76,6 @@
 #pragma mark -
 #pragma mark Queries
 
-+ (NSArray *)findAll:(NSManagedObjectContext *)inContext;
-{
-  return [self findInContext:inContext predicate:nil];
-}
-
 + (NSArray *)findInContext:(NSManagedObjectContext *)inContext predicate:(NSPredicate *)predicate;
 {
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];

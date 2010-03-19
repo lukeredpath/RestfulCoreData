@@ -18,7 +18,6 @@
 
 + (NSEntityDescription *)entityFromContext:(NSManagedObjectContext *)context;
 
-+ (NSArray *)findAll:(NSManagedObjectContext *)inContext;
 + (NSArray *)findInContext:(NSManagedObjectContext *)inContext predicate:(NSPredicate *)predicate;
 
 + (id)findAllRemote:(id<PTResultsDelegate>)resultsDelegate;

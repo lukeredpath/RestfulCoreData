@@ -21,4 +21,6 @@
 - (void)setManagedObject:(NSManagedObject *)object isMaster:(BOOL)isMaster;
 - (void)syncManagedObjectToSelf:(NSManagedObject *)_managedObject;
 - (void)syncSelfToManagedObject:(NSManagedObject *)_managedObject;
+
++ (NSArray *)findAll:(NSManagedObjectContext *)inContext;
 @end

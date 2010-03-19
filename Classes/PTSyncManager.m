@@ -24,6 +24,12 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   return self;
 }
 
+- (void)dealloc;
+{
+  [managedObjectContext release];
+  [super dealloc];
+}
+
 - (void)synchronizeRemote:(id)remoteModel;
 {
   NSAssert1([remoteModel respondsToSelector:@selector(findAllRemote:)], 
@@ -40,20 +46,32 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
 {
   NSEntityDescription *entity = [modelKlass performSelector:@selector(entityFromContext:) withObject:managedObjectContext];
   
-  
   // TODO it seems wrong that remoteId is hardcoded here, what if I want to use UUID instead?
   NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteId in %@", [results valueForKeyPath:@"remoteId"]];
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
   [fetchRequest setEntity:entity];
   [fetchRequest setPredicate:predicate];
   
-  NSArray *managedObjectsForResults = [managedObjectContext executeFetchRequest:fetchRequest error:nil];
+  NSSet *managedObjectsForResultsSet = [NSSet setWithArray:[managedObjectContext executeFetchRequest:fetchRequest error:nil]];
   [fetchRequest release];
+  
+  // delete all objects that no longer exist on the server
+  NSFetchRequest *fetchRequestForAll = [[NSFetchRequest alloc] init];
+  [fetchRequestForAll setEntity:entity];  
+  NSArray *fetchResults = [managedObjectContext executeFetchRequest:fetchRequestForAll error:nil];
+  [fetchRequestForAll release];
+  
+  NSMutableSet *allObjectSet = [[NSMutableSet alloc] initWithArray:fetchResults];
+  [allObjectSet minusSet:managedObjectsForResultsSet];
+  for (NSManagedObject *object in allObjectSet) {
+    [managedObjectContext deleteObject:object];
+  }
+  [allObjectSet release];
   
   // the reason I'm munging this into dictionary keyed by remote ID is to make it easier
   // to look up an existing NSManagedObject for a given record, perhaps there is a better way?
   NSMutableDictionary *managedObjectsByRemoteId = [NSMutableDictionary dictionary];
-  for (NSManagedObject *object in managedObjectsForResults) {
+  for (NSManagedObject *object in managedObjectsForResultsSet) {
     [managedObjectsByRemoteId setObject:object forKey:[object valueForKey:@"remoteId"]];
   }
   
