@@ -15,16 +15,10 @@
 @synthesize managedObject;
 @synthesize entityName;
 
-static NSString *apiKey;
-
 + (void)initialize {
   [self setDelegate:self];
-  [self setBaseURL:[NSURL URLWithString:@"http://www.pivotaltracker.com/services/v3"]];
+  [self setBaseURL:[NSURL URLWithString:@"http://localhost:3000/"]];
   [self setFormat:HRDataFormatXML];
-  
-  if (apiKey != nil) {
-    [self setHeaders:[NSDictionary dictionaryWithObject:apiKey forKey:@"X-TrackerToken"]];
-  }
 }
 
 + (NSString *)entityName;
@@ -79,14 +73,6 @@ static NSString *apiKey;
 }
 
 #pragma mark -
-#pragma mark Configuration
-
-+ (void)setAPIKey:(NSString *)key;
-{
-  apiKey = [key copy];
-}
-
-#pragma mark -
 #pragma mark PTManagedObject synching
 
 - (void)setManagedObject:(PTManagedObject *)object isMaster:(BOOL)isMaster;
@@ -97,6 +83,13 @@ static NSString *apiKey;
     [self syncSelfToManagedObject:object];
   } else {
     [self syncManagedObjectToSelf:object];
+  }
+}
+
+- (void)syncManagedObject;
+{
+  if (self.managedObject) {
+    [self syncManagedObjectToSelf:self.managedObject];
   }
 }
 

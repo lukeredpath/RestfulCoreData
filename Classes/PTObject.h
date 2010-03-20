@@ -21,6 +21,4 @@
 @property (nonatomic, copy) NSString *remoteId;
 @property (nonatomic, retain) PTManagedObject *managedObject;
 @property (nonatomic, readonly) NSString *entityName;
-
-+ (void)setAPIKey:(NSString *)apiKey;
 @end

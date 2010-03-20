@@ -60,6 +60,7 @@
 - (void)syncWithRemoteData:(NSDictionary *)remoteData;
 {
   self.remoteId = [remoteData valueForKey:@"id"];
+  self.remoteId = [[remoteData valueForKey:@"id"] valueForKey:@"content"];
   self.name     = [remoteData valueForKey:@"name"];
   self.account  = [remoteData valueForKey:@"account"];
   

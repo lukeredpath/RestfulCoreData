@@ -24,9 +24,8 @@ NSString *const PTTrackerSynchingObjectContext = @"TrackerSynchingObjectContext"
 @synthesize coreDataManager;
 @synthesize syncManager;
 
-- (void)applicationDidFinishLaunching:(UIApplication *)application {    
-  [PTObject setAPIKey:PT_API_KEY];
-  
+- (void)applicationDidFinishLaunching:(UIApplication *)application 
+{      
   self.coreDataManager.persistentStoreCoordinator = [CoreDataManager newPersistentStoreCoordinatorForModel:[NSManagedObjectModel mergedModelFromBundles:nil] withStoreType:NSSQLiteStoreType storePath:@"Tracker.sqlite"];
   
   [self.coreDataManager registerDefaultManagedObjectContext];
