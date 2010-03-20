@@ -10,13 +10,11 @@
 
 + (NSString *)entityName;
 - (NSString *)entityName;
-
-- (void)syncWithRemoteData:(NSDictionary *)remoteData;
-- (void)syncToRemote:(id<PTResultsDelegate>)resultsDelegate;
-
-+ (id)findAllRemote:(id<PTResultsDelegate>)resultsDelegate;
-
-+ (void)postToRemote:(id<PTRemoteObject>)project 
-     resultsDelegate:(id<PTResultsDelegate>)resultsDelegate;
+- (id)remoteId;
+- (void)updateFromRemoteData:(NSDictionary *)remoteData;
++ (id)fetchRemote:(id<PTResultsDelegate>)resultsDelegate;
+- (id)createRemote:(id<PTResultsDelegate>)resultsDelegate;
+- (id)updateRemote:(id<PTResultsDelegate>)resultsDelegate;
+- (id)deleteRemote:(id<PTResultsDelegate>)resultsDelegate;
 
 @end

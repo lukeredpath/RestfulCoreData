@@ -10,6 +10,7 @@
 #import "NSManagedObjectContext+Helpers.h"
 #import "NSManagedObjectContext+SimpleFetches.h"
 #import "PTManagedObject.h"
+#import "PTRemoteObject.h"
 
 NSString *const PTSyncManagerWillSyncNotification = @"PTSyncManagerWillSyncNotification";
 NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotification";
@@ -41,7 +42,7 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
 - (void)synchronizeFromRemote:(Class<PTRemoteObject>)remoteModelKlass;
 {
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerWillSyncNotification object:self];
-  [remoteModelKlass findAllRemote:self];
+  [remoteModelKlass fetchRemote:self];
 }
 
 /* 
@@ -58,7 +59,11 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   NSSet *updatedObjects  = [note.userInfo objectForKey:NSUpdatedObjectsKey];
 
   for (PTManagedObject *managedObject in [insertedObjects setByAddingObjectsFromSet:updatedObjects]) {
-    [managedObject.remoteObject syncToRemote:self];
+    if (managedObject.remoteObject.remoteId == nil) {
+      [managedObject.remoteObject createRemote:self];
+    } else {
+      [managedObject.remoteObject updateRemote:self];
+    }
   }
 }
 
@@ -106,7 +111,7 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   NSArray *localObjects = [managedObjectContext fetchAllOfEntity:entity predicate:localOnlyPredicate error:nil];
   for (PTManagedObject *object in localObjects) {
     id<PTRemoteObject> modelInstance = [[(Class)remoteModelKlass alloc] initWithManagedObject:object];
-    // [remoteModelKlass postToRemote:modelInstance resultsDelegate:self];
+    [modelInstance createRemote:self];
   }
   
   [managedObjectContext save:nil];

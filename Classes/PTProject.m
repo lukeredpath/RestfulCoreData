@@ -31,7 +31,7 @@
 - (id)initWithRemoteDictionary:(NSDictionary *)dictionary;
 {
   if (self = [super init]) {
-    [self syncWithRemoteData:dictionary];
+    [self updateFromRemoteData:dictionary];
   }
   return self;
 }
@@ -57,7 +57,10 @@
   self.account = [object valueForKey:@"account"];
 }
 
-- (void)syncWithRemoteData:(NSDictionary *)remoteData;
+#pragma mark -
+#pragma mark PTRemoteObject protocol methods
+
+- (void)updateFromRemoteData:(NSDictionary *)remoteData;
 {
   self.remoteId = [[remoteData valueForKey:@"id"] valueForKey:@"content"];
   self.name     = [remoteData valueForKey:@"name"];
@@ -68,41 +71,37 @@
   }
 }
 
-- (void)syncToRemote:(id<PTResultsDelegate>)resultsDelegate;
-{
-  if (self.remoteId) {
-    [[self class] putToRemote:self resultsDelegate:resultsDelegate];
-  } else {
-    [[self class] postToRemote:self resultsDelegate:resultsDelegate];
-  }
-}
-
-#pragma mark -
-#pragma mark Remote access
-
-+ (id)findAllRemote:(id<PTResultsDelegate>)resultsDelegate;
++ (id)fetchRemote:(id<PTResultsDelegate>)resultsDelegate;
 {
   return [self getPath:@"/projects" withOptions:nil object:resultsDelegate];
 }
 
-// this is gonna be a complete hack for now
-+ (void)postToRemote:(PTProject *)project resultsDelegate:(id<PTResultsDelegate>)resultsDelegate;
-{ 
-  NSDictionary *object = [[NSDictionary alloc] initWithObjectsAndKeys:
-      project, @"project", resultsDelegate, @"resultsDelegate", nil];
-  
-  NSString *XMLRepresentation = [NSString stringWithFormat:@"<project><name>%@</name></project>", project.name];
-  [self postPath:@"/projects" withOptions:[NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"] object:object];  
-}
-
-+ (void)putToRemote:(PTProject *)project resultsDelegate:(id<PTResultsDelegate>)resultsDelegate;
+- (id)createRemote:(id<PTResultsDelegate>)resultsDelegate;
 {
   NSDictionary *object = [[NSDictionary alloc] initWithObjectsAndKeys:
-                          project, @"project", resultsDelegate, @"resultsDelegate", nil];
+    self, @"project", resultsDelegate, @"resultsDelegate", nil];
   
-  NSString *XMLRepresentation = [NSString stringWithFormat:@"<project><name>%@</name></project>", project.name];
-  [self putPath:[NSString stringWithFormat:@"/projects/%@", project.remoteId] withOptions:[NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"] object:object];  
+  NSString *XMLRepresentation = [NSString stringWithFormat:@"<project><name>%@</name></project>", self.name];
+  return [[self class] postPath:@"/projects" withOptions:[NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"] object:object];  
 }
+
+- (id)updateRemote:(id<PTResultsDelegate>)resultsDelegate;
+{
+  NSDictionary *object = [[NSDictionary alloc] initWithObjectsAndKeys:
+    self, @"project", resultsDelegate, @"resultsDelegate", nil];
+  
+  NSString *XMLRepresentation = [NSString stringWithFormat:@"<project><name>%@</name></project>", self.name];
+  return [[self class] putPath:[NSString stringWithFormat:@"/projects/%@", self.remoteId] withOptions:[NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"] object:object];  
+  
+}
+
+- (id)deleteRemote:(id<PTResultsDelegate>)resultsDelegate;
+{
+  return nil;
+}
+
+#pragma mark -
+#pragma mark HTTP request delegate
 
 + (void)restConnection:(NSURLConnection *)connection didReturnResource:(id)resource object:(id)object 
 { 
@@ -114,7 +113,7 @@
     [object release];
      
     if (project.remoteId == nil) { // this is a create, so we need to update the remote ID
-      [project syncWithRemoteData:projectData];
+      [project updateFromRemoteData:projectData];
     }    
     [resultsDelegate remoteModel:self didFinishUpdating:project];
   } else {
