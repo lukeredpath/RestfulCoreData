@@ -6,14 +6,14 @@
 //  Copyright 2010 LJR Software Limited. All rights reserved.
 //
 
-#import "PTTrackerRemoteModel.h"
+#import "PTObject.h"
+#import "PTManagedObject.h"
 
-
-@implementation PTTrackerRemoteModel
+@implementation PTObject
 
 @synthesize remoteId;
 @synthesize managedObject;
-@dynamic entityName;
+@synthesize entityName;
 
 static NSString *apiKey;
 
@@ -27,19 +27,55 @@ static NSString *apiKey;
   }
 }
 
-- (NSManagedObject *)newManagedObjectInContext:(NSManagedObjectContext *)context entity:(NSEntityDescription *)entity;
-{
-  return [[NSManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
-}
-
 + (NSString *)entityName;
 {
   return nil;
 }
 
-- (NSString *)entityName;
+- (void)dealloc;
 {
-  return [[self class] entityName];
+  [entityName release];
+  [super dealloc];
+}
+
+- (id)init;
+{
+  if (self = [super init]) {
+    entityName = [[self class] entityName];
+  }
+  return self;
+}
+
+- (PTManagedObject *)newManagedObjectInContext:(NSManagedObjectContext *)context;
+{
+  NSEntityDescription *entity = [NSEntityDescription entityForName:self.entityName inManagedObjectContext:context];
+  PTManagedObject *object = [[PTManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+  object.remoteObject = (id<PTRemoteObject>)self;
+  return object;
+}
+
+- (void)initializeInManagedObjectContext:(NSManagedObjectContext *)context;
+{
+  PTManagedObject *newManagedObject = [self newManagedObjectInContext:context];
+  [self setManagedObject:newManagedObject isMaster:NO];
+  [newManagedObject release];
+}
+
+- (id)initWithManagedObject:(PTManagedObject *)object;
+{
+  if (self = [super init]) {
+    [self setManagedObject:object isMaster:YES];
+  }
+  return self;
+}
+
+- (void)setManagedObject:(PTManagedObject *)object;
+{
+  if (object != managedObject) {
+    [managedObject release];
+    managedObject = [object retain];
+    managedObject.remoteObject = (id<PTRemoteObject>)self;
+  }
 }
 
 #pragma mark -
@@ -51,9 +87,9 @@ static NSString *apiKey;
 }
 
 #pragma mark -
-#pragma mark NSManagedObject synching
+#pragma mark PTManagedObject synching
 
-- (void)setManagedObject:(NSManagedObject *)object isMaster:(BOOL)isMaster;
+- (void)setManagedObject:(PTManagedObject *)object isMaster:(BOOL)isMaster;
 {
   self.managedObject = object;
   
@@ -64,12 +100,12 @@ static NSString *apiKey;
   }
 }
 
-- (void)syncManagedObjectToSelf:(NSManagedObject *)object;
+- (void)syncManagedObjectToSelf:(PTManagedObject *)object;
 {
   [object setValue:self.remoteId forKey:@"remoteId"];
 }
 
-- (void)syncSelfToManagedObject:(NSManagedObject *)object;
+- (void)syncSelfToManagedObject:(PTManagedObject *)object;
 {
   self.remoteId = [object valueForKey:@"remoteId"];
 }

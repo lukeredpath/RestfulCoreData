@@ -7,7 +7,6 @@
 //
 
 #import "NewProjectController.h"
-#import "NSManagedObjectContext+Helpers.h"
 #import "PTProject.h"
 
 @implementation NewProjectController
@@ -64,11 +63,10 @@
   PTProject *project = [[PTProject alloc] init];
   project.name = _textField.text;
   project.account = @"LJR Software Ltd"; // TODO, provide a form for this
+
+  [project initializeInManagedObjectContext:self.managedObjectContext];
   
-  NSManagedObject *newObject = [self.managedObjectContext insertNewObjectForEntityWithName:project.entityName];
-  [project setManagedObject:newObject isMaster:NO];
-  
-  [self.managedObjectContext processPendingChanges];
+  [self.managedObjectContext save:nil];
   [self.navigationController popViewControllerAnimated:YES];
 }
 

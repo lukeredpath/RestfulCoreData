@@ -7,6 +7,7 @@
 //
 
 #import "PTProject.h"
+#import "PTManagedObject.h"
 
 @implementation PTProject
 
@@ -22,27 +23,17 @@
   [super dealloc];
 }
 
-- (id)initWithManagedObject:(NSManagedObject *)object;
++ (NSString *)entityName;
 {
-  if (self = [super init]) {
-    [self setManagedObject:object isMaster:YES];
-  }
-  return self;
+  return @"Project";
 }
 
 - (id)initWithRemoteDictionary:(NSDictionary *)dictionary;
 {
   if (self = [super init]) {
-    self.remoteId = [dictionary valueForKey:@"id"];
-    self.name     = [dictionary valueForKey:@"name"];
-    self.account  = [dictionary valueForKey:@"account"];
+    [self syncWithRemoteData:dictionary];
   }
   return self;
-}
-
-+ (NSString *)entityName;
-{
-  return @"Project";
 }
 
 - (NSString *)description;
@@ -50,7 +41,7 @@
   return [NSString stringWithFormat:@"[PTProject id:%@ name:%@]", self.remoteId, self.name];
 }
 
-- (void)syncManagedObjectToSelf:(NSManagedObject *)object;
+- (void)syncManagedObjectToSelf:(PTManagedObject *)object;
 {
   [super syncManagedObjectToSelf:object];
   
@@ -58,7 +49,7 @@
   [object setValue:self.account forKey:@"account"];
 }
 
-- (void)syncSelfToManagedObject:(NSManagedObject *)object;
+- (void)syncSelfToManagedObject:(PTManagedObject *)object;
 {
   [super syncSelfToManagedObject:object];
   
@@ -66,26 +57,67 @@
   self.account = [object valueForKey:@"account"];
 }
 
+- (void)syncWithRemoteData:(NSDictionary *)remoteData;
+{
+  self.remoteId = [remoteData valueForKey:@"id"];
+  self.name     = [remoteData valueForKey:@"name"];
+  self.account  = [remoteData valueForKey:@"account"];
+  
+  if (self.managedObject) {
+    [self syncManagedObjectToSelf:self.managedObject];
+  }
+}
+
+- (void)syncToRemote:(id<PTResultsDelegate>)resultsDelegate;
+{
+  if (self.remoteId) {
+    // do remote update
+  } else {
+    [[self class] postToRemote:self resultsDelegate:resultsDelegate];
+  }
+}
+
 #pragma mark -
 #pragma mark Remote access
 
 + (id)findAllRemote:(id<PTResultsDelegate>)resultsDelegate;
 {
-                          
   return [self getPath:@"/projects" withOptions:nil object:resultsDelegate];
 }
 
-+ (void)restConnection:(NSURLConnection *)connection didReturnResource:(id)resource object:(id)object { 
-  NSMutableArray *projects = [[NSMutableArray alloc] init];
+// this is gonna be a complete hack for now
++ (void)postToRemote:(PTProject *)project resultsDelegate:(id<PTResultsDelegate>)resultsDelegate;
+{ 
+  NSDictionary *object = [[NSDictionary alloc] initWithObjectsAndKeys:
+      project, @"project", resultsDelegate, @"resultsDelegate", nil];
   
-  for(id item in [resource objectForKey:@"projects"]) {
-    PTProject *project = [[PTProject alloc] initWithRemoteDictionary:item];
-    [projects addObject:project];
-    [project release];
+  NSString *XMLRepresentation = [NSString stringWithFormat:@"<project><name>%@</name></project>", project.name];
+  [self postPath:@"/projects" withOptions:[NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"] object:object];  
+}
+
++ (void)restConnection:(NSURLConnection *)connection didReturnResource:(id)resource object:(id)object 
+{ 
+  NSDictionary *projectData = [resource valueForKey:@"project"];
+  
+  if (projectData) {
+    PTProject *project = [object valueForKey:@"project"];
+    id<PTResultsDelegate> resultsDelegate = [object valueForKey:@"resultsDelegate"];
+    [object release];
+    
+    [project syncWithRemoteData:projectData];
+    [resultsDelegate remoteModel:self didFinishUpdating:project];
+  } else {
+    NSMutableArray *projects = [[NSMutableArray alloc] init];
+    
+    for(id projectData in [resource objectForKey:@"projects"]) {
+      PTProject *project = [[PTProject alloc] initWithRemoteDictionary:projectData];
+      [projects addObject:project];
+      [project release];
+    }
+    
+    [(id<PTResultsDelegate>)object remoteModel:self didFinishLoading:projects];
+    [projects release]; 
   }
-  
-  [(id<PTResultsDelegate>)object remoteModel:self didFinishLoading:projects];
-  [projects release];
 }
 
 @end

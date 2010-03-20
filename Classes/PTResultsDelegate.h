@@ -11,4 +11,5 @@
 
 @optional
 - (void)remoteModel:(id)modelKlass didFinishLoading:(NSArray *)results;
+- (void)remoteModel:(id)modelKlass didFinishUpdating:(id)updatedObject;
 @end

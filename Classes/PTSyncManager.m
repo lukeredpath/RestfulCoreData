@@ -7,9 +7,9 @@
 //
 
 #import "PTSyncManager.h"
-#import "PTTrackerRemoteModel.h"
 #import "NSManagedObjectContext+Helpers.h"
 #import "NSManagedObjectContext+SimpleFetches.h"
+#import "PTManagedObject.h"
 
 NSString *const PTSyncManagerWillSyncNotification = @"PTSyncManagerWillSyncNotification";
 NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotification";
@@ -28,25 +28,43 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
 
 - (void)dealloc;
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [managedObjectContext release];
   [super dealloc];
 }
 
-- (void)synchronizeRemote:(id)remoteModel;
+- (void)observeChangesToManagedObjectContext:(NSManagedObjectContext *)context;
 {
-  NSAssert1([remoteModel respondsToSelector:@selector(findAllRemote:)], 
-      @"Class %@ should respond to findAllRemote:", remoteModel);
-  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidUpdate:) name:NSManagedObjectContextDidSaveNotification object:context];
+}
+
+- (void)synchronizeFromRemote:(Class<PTRemoteObject>)remoteModelKlass;
+{
+  [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerWillSyncNotification object:self];
+  [remoteModelKlass findAllRemote:self];
+}
+
+/* 
+ This method is called when any managed object context's that the SyncManager
+ is observing are updated. This will typically be the main context being used
+ by the app on the main thread.
+*/
+- (void)managedObjectContextDidUpdate:(NSNotification *)note;
+{
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerWillSyncNotification object:self];
   
-  [remoteModel performSelector:@selector(findAllRemote:) withObject:self];
+  // we need to post any newly created objects up to the server
+  NSArray *insertedObjects = [note.userInfo objectForKey:NSInsertedObjectsKey];
+  for (PTManagedObject *managedObject in insertedObjects) {
+    [managedObject.remoteObject syncToRemote:self];
+  }
 }
 
 #pragma mark PTResultsDelegate methods
 
-- (void)remoteModel:(id)modelKlass didFinishLoading:(NSArray *)results;
+- (void)remoteModel:(Class<PTRemoteObject>)remoteModelKlass didFinishLoading:(NSArray *)results;
 {
-  NSString *entityName = [modelKlass performSelector:@selector(entityName)];
+  NSString *entityName = [remoteModelKlass entityName];
   NSEntityDescription *entity = [managedObjectContext entityDescriptionForName:entityName];
   
   // TODO it seems wrong that remoteId is hardcoded here, what if I want to use UUID instead?
@@ -72,19 +90,31 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
     [managedObjectsByRemoteId setObject:object forKey:[object valueForKey:@"remoteId"]];
   }
   
-  for (PTTrackerRemoteModel *record in results) {
-    NSManagedObject *managedObject = [managedObjectsByRemoteId objectForKey:record.remoteId];
+  for (PTObject *record in results) {
+    PTManagedObject *managedObject = [managedObjectsByRemoteId objectForKey:record.remoteId];
     
     [record setManagedObject:managedObject isMaster:NO];
     
     if (record.managedObject == nil) {
-      NSManagedObject *newObject = [managedObjectContext insertNewObjectForEntityWithName:record.entityName];
-      [record setManagedObject:newObject isMaster:NO];
+      [record initializeInManagedObjectContext:self.managedObjectContext];
     }
   }
+  // now post all local only objects back up to the server
+  NSPredicate *localOnlyPredicate = [NSPredicate predicateWithFormat:@"remoteId = NIL"];
+  NSArray *localObjects = [managedObjectContext fetchAllOfEntity:entity predicate:localOnlyPredicate error:nil];
+  for (PTManagedObject *object in localObjects) {
+    id<PTRemoteObject> modelInstance = [[(Class)remoteModelKlass alloc] initWithManagedObject:object];
+    // [remoteModelKlass postToRemote:modelInstance resultsDelegate:self];
+  }
+  
   [managedObjectContext save:nil];
   
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerDidSyncNotification object:self];
+}
+
+- (void)remoteModel:(id)modelKlass didFinishUpdating:(id)updatedObject;
+{
+  [managedObjectContext save:nil];
 }
 
 @end

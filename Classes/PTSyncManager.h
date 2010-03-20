@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "PTResultsDelegate.h"
+#import "PTObject.h"
 
 extern NSString *const PTSyncManagerWillSyncNotification;
 extern NSString *const PTSyncManagerDidSyncNotification;
@@ -18,5 +19,6 @@ extern NSString *const PTSyncManagerDidSyncNotification;
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
-- (void)synchronizeRemote:(id)remoteModel;
+- (void)observeChangesToManagedObjectContext:(NSManagedObjectContext *)context;
+- (void)synchronizeFromRemote:(Class<PTRemoteObject>)remoteModelKlass;
 @end

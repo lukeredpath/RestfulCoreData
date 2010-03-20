@@ -61,7 +61,7 @@
 
 - (void)refreshRemote;
 {
-  [self.syncManager synchronizeRemote:[PTProject class]];
+  [self.syncManager synchronizeFromRemote:[PTProject class]];
 }
 
 - (void)findProjects;
@@ -136,7 +136,7 @@ static NSString *ProjectCellIdentifier = @"ProjectCellIdentifier";
   PTProject *project = [self objectAtIndexPath:indexPath];
 
   cell.textLabel.text = project.name;
-  cell.detailTextLabel.text = project.account;
+  cell.detailTextLabel.text = project.remoteId;
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   
   return cell;

@@ -7,16 +7,14 @@
 //
 
 #import "PTResultsDelegate.h"
-#import "PTTrackerRemoteModel.h"
+#import "PTObject.h"
 
-@interface PTProject : PTTrackerRemoteModel {
+@interface PTProject : PTObject <PTRemoteObject> {
   NSString *name;
   NSString *account;
 }
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *account;
 
-- (id)initWithManagedObject:(NSManagedObject *)object;
 - (id)initWithRemoteDictionary:(NSDictionary *)dictionary;
-+ (id)findAllRemote:(id<PTResultsDelegate>)resultsDelegate;
 @end

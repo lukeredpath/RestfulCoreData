@@ -10,7 +10,7 @@
 #import "TrackerViewController.h"
 #import "CoreDataManager.h"
 #import "PTSyncManager.h"
-#import "PTTrackerRemoteModel.h"
+#import "PTObject.h"
 #import "PTProject.h"
 
 
@@ -25,7 +25,7 @@ NSString *const PTTrackerSynchingObjectContext = @"TrackerSynchingObjectContext"
 @synthesize syncManager;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
-  [PTTrackerRemoteModel setAPIKey:PT_API_KEY];
+  [PTObject setAPIKey:PT_API_KEY];
   
   self.coreDataManager.persistentStoreCoordinator = [CoreDataManager newPersistentStoreCoordinatorForModel:[NSManagedObjectModel mergedModelFromBundles:nil] withStoreType:NSSQLiteStoreType storePath:@"Tracker.sqlite"];
   
@@ -36,11 +36,12 @@ NSString *const PTTrackerSynchingObjectContext = @"TrackerSynchingObjectContext"
                                 isDefault:NO];
   
   syncManager = [[PTSyncManager alloc] initWithManagedObjectContext:syncContext];
+  [syncManager observeChangesToManagedObjectContext:self.coreDataManager.defaultManagedObjectContext];
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncManagerWillSync:) name:PTSyncManagerWillSyncNotification object:self.syncManager];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncManagerDidSync:)  name:PTSyncManagerDidSyncNotification object:self.syncManager];
 
-  viewController.managedObjectContext = [self.coreDataManager defaultManagedObjectContext];
+  viewController.managedObjectContext = self.coreDataManager.defaultManagedObjectContext;
   viewController.syncManager = self.syncManager;
   
   [window addSubview:navigationController.view];
