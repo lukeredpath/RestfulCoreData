@@ -12,6 +12,7 @@
 #import "PTProject.h"
 #import "PTSyncManager.h"
 #import "NewProjectController.h"
+#import "EditProjectController.h"
 
 @implementation TrackerViewController
 
@@ -157,6 +158,18 @@ static NSString *ProjectCellIdentifier = @"ProjectCellIdentifier";
 { 
   id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController.sections objectAtIndex:section];
   return [sectionInfo name];
+}
+
+#pragma mark -
+#pragma mark UITableViewDelegate methods
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+  EditProjectController *editController = [[EditProjectController alloc] init];
+  editController.project = [self objectAtIndexPath:indexPath];
+  editController.managedObjectContext = self.managedObjectContext;
+  [self.navigationController pushViewController:editController animated:YES];
+  [editController release];
 }
 
 @end

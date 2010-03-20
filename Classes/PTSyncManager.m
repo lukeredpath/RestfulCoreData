@@ -53,9 +53,11 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
 {
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerWillSyncNotification object:self];
   
-  // we need to post any newly created objects up to the server
-  NSArray *insertedObjects = [note.userInfo objectForKey:NSInsertedObjectsKey];
-  for (PTManagedObject *managedObject in insertedObjects) {
+  // we need to sync any new and updated objects up to the server
+  NSSet *insertedObjects = [note.userInfo objectForKey:NSInsertedObjectsKey];
+  NSSet *updatedObjects  = [note.userInfo objectForKey:NSUpdatedObjectsKey];
+
+  for (PTManagedObject *managedObject in [insertedObjects setByAddingObjectsFromSet:updatedObjects]) {
     [managedObject.remoteObject syncToRemote:self];
   }
 }

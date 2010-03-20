@@ -37,6 +37,13 @@
 - (void)setManagedObject:(PTManagedObject *)object isMaster:(BOOL)isMaster;
 
 /*
+ * Sync's the objects existing managed object with itself. This will typically
+ * be called after updating properties on the object (to commit the changes back
+ * to Core Data).
+ */
+- (void)syncManagedObject;
+
+/*
  * Sets a managed object's properties to the values of the instance's own
  * matching properties. The base implementation only syncs the remote ID
  * property. Typically overridde by sub-classes to set their own unique properties. 

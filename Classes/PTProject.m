@@ -59,7 +59,6 @@
 
 - (void)syncWithRemoteData:(NSDictionary *)remoteData;
 {
-  self.remoteId = [remoteData valueForKey:@"id"];
   self.remoteId = [[remoteData valueForKey:@"id"] valueForKey:@"content"];
   self.name     = [remoteData valueForKey:@"name"];
   self.account  = [remoteData valueForKey:@"account"];
@@ -72,7 +71,7 @@
 - (void)syncToRemote:(id<PTResultsDelegate>)resultsDelegate;
 {
   if (self.remoteId) {
-    // do remote update
+    [[self class] putToRemote:self resultsDelegate:resultsDelegate];
   } else {
     [[self class] postToRemote:self resultsDelegate:resultsDelegate];
   }
@@ -96,16 +95,27 @@
   [self postPath:@"/projects" withOptions:[NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"] object:object];  
 }
 
++ (void)putToRemote:(PTProject *)project resultsDelegate:(id<PTResultsDelegate>)resultsDelegate;
+{
+  NSDictionary *object = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          project, @"project", resultsDelegate, @"resultsDelegate", nil];
+  
+  NSString *XMLRepresentation = [NSString stringWithFormat:@"<project><name>%@</name></project>", project.name];
+  [self putPath:[NSString stringWithFormat:@"/projects/%@", project.remoteId] withOptions:[NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"] object:object];  
+}
+
 + (void)restConnection:(NSURLConnection *)connection didReturnResource:(id)resource object:(id)object 
 { 
   NSDictionary *projectData = [resource valueForKey:@"project"];
   
   if (projectData) {
-    PTProject *project = [object valueForKey:@"project"];
     id<PTResultsDelegate> resultsDelegate = [object valueForKey:@"resultsDelegate"];
+    PTProject *project = [object valueForKey:@"project"];
     [object release];
-    
-    [project syncWithRemoteData:projectData];
+     
+    if (project.remoteId == nil) { // this is a create, so we need to update the remote ID
+      [project syncWithRemoteData:projectData];
+    }    
     [resultsDelegate remoteModel:self didFinishUpdating:project];
   } else {
     NSMutableArray *projects = [[NSMutableArray alloc] init];

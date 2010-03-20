@@ -23,6 +23,7 @@
 		A339B7781153FD6000CA2BB5 /* NewProjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = A339B7771153FD6000CA2BB5 /* NewProjectController.m */; };
 		A339B77C1153FDCC00CA2BB5 /* NewProjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A339B77B1153FDCC00CA2BB5 /* NewProjectView.xib */; };
 		A3D1C95A115545F4009A12AD /* PTManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D1C959115545F4009A12AD /* PTManagedObject.m */; };
+		A3D1CAAE115556D1009A12AD /* EditProjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D1CAAD115556D1009A12AD /* EditProjectController.m */; };
 		A3EDBE4E1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBE4D1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m */; };
 		A3EDBF7611528281004DA6AB /* UIApplication+Directories.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBF7511528281004DA6AB /* UIApplication+Directories.m */; };
 		A3EDBF791152828D004DA6AB /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBF781152828D004DA6AB /* CoreDataManager.m */; };
@@ -51,7 +52,6 @@
 		A339B5AB1153DD6400CA2BB5 /* PTSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTSyncManager.m; sourceTree = "<group>"; };
 		A339B5AC1153DD6400CA2BB5 /* PTObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTObject.h; sourceTree = "<group>"; };
 		A339B5AD1153DD6400CA2BB5 /* PTObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTObject.m; sourceTree = "<group>"; };
-		A339B6051153E0D300CA2BB5 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A339B6841153F23C00CA2BB5 /* NSManagedObjectContext+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+Helpers.h"; sourceTree = "<group>"; };
 		A339B6851153F23C00CA2BB5 /* NSManagedObjectContext+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Helpers.m"; sourceTree = "<group>"; };
 		A339B6C31153F50D00CA2BB5 /* NSManagedObjectContext+SimpleFetches.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+SimpleFetches.h"; sourceTree = "<group>"; };
@@ -63,6 +63,8 @@
 		A3D1C959115545F4009A12AD /* PTManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTManagedObject.m; sourceTree = "<group>"; };
 		A3D1C9CA11554CD1009A12AD /* PTSynchronizedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTSynchronizedObject.h; sourceTree = "<group>"; };
 		A3D1C9D211554D00009A12AD /* PTRemoteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTRemoteObject.h; sourceTree = "<group>"; };
+		A3D1CAAC115556D1009A12AD /* EditProjectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditProjectController.h; sourceTree = "<group>"; };
+		A3D1CAAD115556D1009A12AD /* EditProjectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditProjectController.m; sourceTree = "<group>"; };
 		A3EDBE4C1151CB60004DA6AB /* NSArray+NSIndexPathLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+NSIndexPathLookup.h"; sourceTree = "<group>"; };
 		A3EDBE4D1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+NSIndexPathLookup.m"; sourceTree = "<group>"; };
 		A3EDBF7411528281004DA6AB /* UIApplication+Directories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Directories.h"; sourceTree = "<group>"; };
@@ -126,7 +128,6 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* Tracker_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
-				A339B6051153E0D300CA2BB5 /* Constants.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -161,6 +162,8 @@
 				28D7ACF70DDB3853001CB0EB /* TrackerViewController.m */,
 				A339B7761153FD6000CA2BB5 /* NewProjectController.h */,
 				A339B7771153FD6000CA2BB5 /* NewProjectController.m */,
+				A3D1CAAC115556D1009A12AD /* EditProjectController.h */,
+				A3D1CAAD115556D1009A12AD /* EditProjectController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				A339B6C51153F50D00CA2BB5 /* NSManagedObjectContext+SimpleFetches.m in Sources */,
 				A339B7781153FD6000CA2BB5 /* NewProjectController.m in Sources */,
 				A3D1C95A115545F4009A12AD /* PTManagedObject.m in Sources */,
+				A3D1CAAE115556D1009A12AD /* EditProjectController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
