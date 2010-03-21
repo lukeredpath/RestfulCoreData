@@ -24,6 +24,7 @@
 		A339B77C1153FDCC00CA2BB5 /* NewProjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A339B77B1153FDCC00CA2BB5 /* NewProjectView.xib */; };
 		A3D1C95A115545F4009A12AD /* PTManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D1C959115545F4009A12AD /* PTManagedObject.m */; };
 		A3D1CAAE115556D1009A12AD /* EditProjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D1CAAD115556D1009A12AD /* EditProjectController.m */; };
+		A3D1CE1E11569847009A12AD /* PTObjectRequestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D1CE1D11569847009A12AD /* PTObjectRequestInfo.m */; };
 		A3EDBE4E1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBE4D1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m */; };
 		A3EDBF7611528281004DA6AB /* UIApplication+Directories.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBF7511528281004DA6AB /* UIApplication+Directories.m */; };
 		A3EDBF791152828D004DA6AB /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBF781152828D004DA6AB /* CoreDataManager.m */; };
@@ -65,6 +66,8 @@
 		A3D1C9D211554D00009A12AD /* PTRemoteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTRemoteObject.h; sourceTree = "<group>"; };
 		A3D1CAAC115556D1009A12AD /* EditProjectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditProjectController.h; sourceTree = "<group>"; };
 		A3D1CAAD115556D1009A12AD /* EditProjectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditProjectController.m; sourceTree = "<group>"; };
+		A3D1CE1C11569847009A12AD /* PTObjectRequestInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTObjectRequestInfo.h; sourceTree = "<group>"; };
+		A3D1CE1D11569847009A12AD /* PTObjectRequestInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTObjectRequestInfo.m; sourceTree = "<group>"; };
 		A3EDBE4C1151CB60004DA6AB /* NSArray+NSIndexPathLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+NSIndexPathLookup.h"; sourceTree = "<group>"; };
 		A3EDBE4D1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+NSIndexPathLookup.m"; sourceTree = "<group>"; };
 		A3EDBF7411528281004DA6AB /* UIApplication+Directories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Directories.h"; sourceTree = "<group>"; };
@@ -180,6 +183,8 @@
 				A339B5AD1153DD6400CA2BB5 /* PTObject.m */,
 				A3D1C958115545F4009A12AD /* PTManagedObject.h */,
 				A3D1C959115545F4009A12AD /* PTManagedObject.m */,
+				A3D1CE1C11569847009A12AD /* PTObjectRequestInfo.h */,
+				A3D1CE1D11569847009A12AD /* PTObjectRequestInfo.m */,
 			);
 			name = "Data Model";
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 				A339B7781153FD6000CA2BB5 /* NewProjectController.m in Sources */,
 				A3D1C95A115545F4009A12AD /* PTManagedObject.m in Sources */,
 				A3D1CAAE115556D1009A12AD /* EditProjectController.m in Sources */,
+				A3D1CE1E11569847009A12AD /* PTObjectRequestInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

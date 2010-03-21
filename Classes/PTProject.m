@@ -9,6 +9,13 @@
 #import "PTProject.h"
 #import "PTManagedObject.h"
 #import "PTResultsDelegate.h"
+#import "PTObjectRequestInfo.h"
+
+@interface PTProject ()
++ (NSArray *)newCollectionFromRemoteCollection:(NSArray *)remoteCollection;
+@end
+
+#pragma mark -
 
 @implementation PTProject
 
@@ -70,31 +77,44 @@
 
 + (id)fetchRemote:(id<PTResultsDelegate>)resultsDelegate;
 {
-  return [self getPath:@"/projects" withOptions:nil object:resultsDelegate];
+  PTObjectRequestInfo *info = [[[PTObjectRequestInfo alloc] initWithMethod:HRRequestMethodGet] autorelease];
+  info.resultsDelegate = resultsDelegate;
+  
+  return [self getPath:@"/projects" withOptions:nil object:info];
 }
 
 - (id)createRemote:(id<PTResultsDelegate>)resultsDelegate;
 {
-  NSDictionary *object = [[NSDictionary alloc] initWithObjectsAndKeys:
-    self, @"project", resultsDelegate, @"resultsDelegate", nil];
+  PTObjectRequestInfo *info = [[[PTObjectRequestInfo alloc] initWithMethod:HRRequestMethodPost] autorelease];
+  info.resultsDelegate = resultsDelegate;
+  info.remoteObject = self;
   
   NSString *XMLRepresentation = [NSString stringWithFormat:@"<project><name>%@</name></project>", self.name];
-  return [[self class] postPath:@"/projects" withOptions:[NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"] object:object];  
+  NSDictionary *requestData = [NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"];
+  
+  return [[self class] postPath:@"/projects" withOptions:requestData object:info];  
 }
 
 - (id)updateRemote:(id<PTResultsDelegate>)resultsDelegate;
 {
-  NSDictionary *object = [[NSDictionary alloc] initWithObjectsAndKeys:
-    self, @"project", resultsDelegate, @"resultsDelegate", nil];
+  PTObjectRequestInfo *info = [[[PTObjectRequestInfo alloc] initWithMethod:HRRequestMethodPut] autorelease];
+  info.resultsDelegate = resultsDelegate;
+  info.remoteObject = self;
   
   NSString *XMLRepresentation = [NSString stringWithFormat:@"<project><name>%@</name></project>", self.name];
-  return [[self class] putPath:[NSString stringWithFormat:@"/projects/%@", self.remoteId] withOptions:[NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"] object:object];  
+  NSDictionary *requestData = [NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"];
+  
+  return [[self class] putPath:[NSString stringWithFormat:@"/projects/%@", self.remoteId] withOptions:requestData object:info];  
   
 }
 
 - (id)deleteRemote:(id<PTResultsDelegate>)resultsDelegate;
 {
-  return nil;
+  PTObjectRequestInfo *info = [[[PTObjectRequestInfo alloc] initWithMethod:HRRequestMethodDelete] autorelease];
+  info.resultsDelegate = resultsDelegate;
+  info.remoteObject = self;
+  
+  return [[self class] deletePath:[NSString stringWithFormat:@"/projects/%@", remoteId] withOptions:nil object:resultsDelegate];
 }
 
 #pragma mark -
@@ -102,31 +122,45 @@
 
 + (void)restConnection:(NSURLConnection *)connection didReturnResource:(id)resource object:(id)object 
 { 
-  NSDictionary *projectData = [resource valueForKey:@"project"];
+  PTObjectRequestInfo *requestInfo = (PTObjectRequestInfo *)object;
   
-  if (projectData) {
-    id<PTResultsDelegate> resultsDelegate = [object valueForKey:@"resultsDelegate"];
-    PTProject *project = [object valueForKey:@"project"];
-    [object release];
-     
-    if (project.remoteId == nil) { // this is a create, so we need to update the remote ID
-      [project updateFromRemoteData:projectData];
-      [resultsDelegate remoteModel:self didCreate:project];
-    } else {
-      [resultsDelegate remoteModel:self didUpdate:project];
+  switch (requestInfo.method) {
+    case HRRequestMethodGet: {
+      NSArray *projects = [self newCollectionFromRemoteCollection:[resource valueForKey:@"projects"]];
+      [requestInfo.resultsDelegate remoteModel:self didFetch:projects];
+      [projects release];
+      break;
     }
-  } else {
-    NSMutableArray *projects = [[NSMutableArray alloc] init];
-    
-    for(id projectData in [resource objectForKey:@"projects"]) {
-      PTProject *project = [[PTProject alloc] initWithRemoteDictionary:projectData];
-      [projects addObject:project];
-      [project release];
+    case HRRequestMethodPost: {
+      [requestInfo.remoteObject updateFromRemoteData:[resource valueForKey:@"project"]];
+      [requestInfo.resultsDelegate remoteModel:self didCreate:requestInfo.remoteObject];
+      break;
     }
-    
-    [(id<PTResultsDelegate>)object remoteModel:self didFetch:projects];
-    [projects release]; 
+    case HRRequestMethodPut: {
+      [requestInfo.resultsDelegate remoteModel:self didUpdate:requestInfo.remoteObject];
+      break;
+    }
+    case HRRequestMethodDelete:
+      [requestInfo.resultsDelegate remoteModel:self didDelete:requestInfo.remoteObject];
+      break;
+    default:
+      NSAssert(NO, @"Request info should always contain a valid HRRequestMethod");
+      break;
   }
+}
+
+#pragma mark -
+#pragma mark Private methods
+
++ (NSArray *)newCollectionFromRemoteCollection:(NSArray *)remoteCollection;
+{
+  NSMutableArray *projects = [[NSMutableArray alloc] init];
+  for(id projectData in remoteCollection) {
+    PTProject *project = [[PTProject alloc] initWithRemoteDictionary:projectData];
+    [projects addObject:project];
+    [project release];
+  }
+  return projects;
 }
 
 @end
