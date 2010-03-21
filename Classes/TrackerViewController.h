@@ -7,18 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PTResultsDelegate.h"
+#import "CRResultsDelegate.h"
 
-@class PTSyncManager;
+@class CRSyncManager;
 
-@interface TrackerViewController : UITableViewController <PTResultsDelegate, NSFetchedResultsControllerDelegate, UITableViewDataSource> {
+@interface TrackerViewController : UITableViewController <CRResultsDelegate, NSFetchedResultsControllerDelegate, UITableViewDataSource> {
   NSManagedObjectContext *managedObjectContext;
   NSFetchedResultsController *fetchedResultsController;
-  PTSyncManager *syncManager;
+  CRSyncManager *syncManager;
 }
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, retain) PTSyncManager *syncManager;
+@property (nonatomic, retain) CRSyncManager *syncManager;
 
 - (void)findProjects;
 - (id)objectAtIndexPath:(NSIndexPath *)indexPath;

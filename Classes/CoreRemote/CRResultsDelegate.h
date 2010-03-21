@@ -1,5 +1,5 @@
 //
-//  PTResultsDelegate.h
+//  CRResultsDelegate.h
 //  Tracker
 //
 //  Created by Luke Redpath on 18/03/2010.

@@ -81,7 +81,7 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
 }
 
 #pragma mark -
-#pragma mark PTResultsDelegate methods
+#pragma mark CRResultsDelegate methods
 
 - (void)remoteModel:(id)modelKlass didFetch:(NSArray *)results
 {

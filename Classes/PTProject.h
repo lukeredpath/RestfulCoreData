@@ -6,10 +6,10 @@
 //  Copyright 2010 LJR Software Limited. All rights reserved.
 //
 
-#import "PTResultsDelegate.h"
 #import "PTObject.h"
+#import "CRRemoteObject.h"
 
-@interface PTProject : PTObject <PTRemoteObject> {
+@interface PTProject : PTObject <CRRemoteObject> {
   NSString *name;
   NSString *account;
 }

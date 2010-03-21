@@ -7,7 +7,7 @@
 //
 
 #import "PTObject.h"
-#import "PTManagedObject.h"
+#import "CRManagedObject.h"
 
 @implementation PTObject
 
@@ -41,22 +41,22 @@
   return self;
 }
 
-- (PTManagedObject *)newManagedObjectInContext:(NSManagedObjectContext *)context;
+- (CRManagedObject *)newManagedObjectInContext:(NSManagedObjectContext *)context;
 {
   NSEntityDescription *entity = [NSEntityDescription entityForName:self.entityName inManagedObjectContext:context];
-  PTManagedObject *object = [[PTManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
-  object.remoteObject = (id<PTRemoteObject>)self;
+  CRManagedObject *object = [[CRManagedObject alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+  object.remoteObject = (id<CRRemoteObject>)self;
   return object;
 }
 
 - (void)initializeInManagedObjectContext:(NSManagedObjectContext *)context;
 {
-  PTManagedObject *newManagedObject = [self newManagedObjectInContext:context];
+  CRManagedObject *newManagedObject = [self newManagedObjectInContext:context];
   [self setManagedObject:newManagedObject isMaster:NO];
   [newManagedObject release];
 }
 
-- (id)initWithManagedObject:(PTManagedObject *)object;
+- (id)initWithManagedObject:(CRManagedObject *)object;
 {
   if (self = [super init]) {
     [self setManagedObject:object isMaster:YES];
@@ -64,12 +64,12 @@
   return self;
 }
 
-- (void)setManagedObject:(PTManagedObject *)object;
+- (void)setManagedObject:(CRManagedObject *)object;
 {
   if (object != managedObject) {
     [managedObject release];
     managedObject = [object retain];
-    managedObject.remoteObject = (id<PTRemoteObject>)self;
+    managedObject.remoteObject = (id<CRRemoteObject>)self;
   }
 }
 
@@ -79,9 +79,9 @@
 }
 
 #pragma mark -
-#pragma mark PTManagedObject synching
+#pragma mark CRManagedObject synching
 
-- (void)setManagedObject:(PTManagedObject *)object isMaster:(BOOL)isMaster;
+- (void)setManagedObject:(CRManagedObject *)object isMaster:(BOOL)isMaster;
 {
   self.managedObject = object;
   
@@ -99,12 +99,12 @@
   }
 }
 
-- (void)syncManagedObjectToSelf:(PTManagedObject *)object;
+- (void)syncManagedObjectToSelf:(CRManagedObject *)object;
 {
   [object setValue:self.remoteId forKey:@"remoteId"];
 }
 
-- (void)syncSelfToManagedObject:(PTManagedObject *)object;
+- (void)syncSelfToManagedObject:(CRManagedObject *)object;
 {
   self.remoteId = [object valueForKey:@"remoteId"];
 }

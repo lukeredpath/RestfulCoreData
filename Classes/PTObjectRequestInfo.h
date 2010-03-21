@@ -8,17 +8,17 @@
 
 #import <HTTPRiot/HRGlobal.h>
 
-@protocol PTRemoteObject, PTResultsDelegate;
+@protocol CRRemoteObject, CRResultsDelegate;
 
 @interface PTObjectRequestInfo : NSObject
 {
   HRRequestMethod method;
-  id<PTRemoteObject> remoteObject;
-  id<PTResultsDelegate> resultsDelegate;
+  id<CRRemoteObject> remoteObject;
+  id<CRResultsDelegate> resultsDelegate;
 }
 - (id)initWithMethod:(HRRequestMethod)requestMethod;
 
 @property (nonatomic, assign) HRRequestMethod method;
-@property (nonatomic, assign) id<PTRemoteObject> remoteObject;
-@property (nonatomic, assign) id<PTResultsDelegate> resultsDelegate;
+@property (nonatomic, assign) id<CRRemoteObject> remoteObject;
+@property (nonatomic, assign) id<CRResultsDelegate> resultsDelegate;
 @end

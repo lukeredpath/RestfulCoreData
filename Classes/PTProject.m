@@ -7,8 +7,8 @@
 //
 
 #import "PTProject.h"
-#import "PTManagedObject.h"
-#import "PTResultsDelegate.h"
+#import "CRManagedObject.h"
+#import "CRResultsDelegate.h"
 #import "PTObjectRequestInfo.h"
 
 @interface PTProject ()
@@ -49,7 +49,7 @@
   return [NSString stringWithFormat:@"[PTProject id:%@ name:%@]", self.remoteId, self.name];
 }
 
-- (void)syncManagedObjectToSelf:(PTManagedObject *)object;
+- (void)syncManagedObjectToSelf:(CRManagedObject *)object;
 {
   [super syncManagedObjectToSelf:object];
   
@@ -57,7 +57,7 @@
   [object setValue:self.account forKey:@"account"];
 }
 
-- (void)syncSelfToManagedObject:(PTManagedObject *)object;
+- (void)syncSelfToManagedObject:(CRManagedObject *)object;
 {
   [super syncSelfToManagedObject:object];
   
@@ -75,7 +75,7 @@
   self.account  = [remoteData valueForKey:@"account"];
 }
 
-+ (id)fetchRemote:(id<PTResultsDelegate>)resultsDelegate;
++ (id)fetchRemote:(id<CRResultsDelegate>)resultsDelegate;
 {
   PTObjectRequestInfo *info = [[[PTObjectRequestInfo alloc] initWithMethod:HRRequestMethodGet] autorelease];
   info.resultsDelegate = resultsDelegate;
@@ -83,7 +83,7 @@
   return [self getPath:@"/projects" withOptions:nil object:info];
 }
 
-- (id)createRemote:(id<PTResultsDelegate>)resultsDelegate;
+- (id)createRemote:(id<CRResultsDelegate>)resultsDelegate;
 {
   PTObjectRequestInfo *info = [[[PTObjectRequestInfo alloc] initWithMethod:HRRequestMethodPost] autorelease];
   info.resultsDelegate = resultsDelegate;
@@ -95,7 +95,7 @@
   return [[self class] postPath:@"/projects" withOptions:requestData object:info];  
 }
 
-- (id)updateRemote:(id<PTResultsDelegate>)resultsDelegate;
+- (id)updateRemote:(id<CRResultsDelegate>)resultsDelegate;
 {
   PTObjectRequestInfo *info = [[[PTObjectRequestInfo alloc] initWithMethod:HRRequestMethodPut] autorelease];
   info.resultsDelegate = resultsDelegate;
@@ -108,7 +108,7 @@
   
 }
 
-- (id)deleteRemote:(id<PTResultsDelegate>)resultsDelegate;
+- (id)deleteRemote:(id<CRResultsDelegate>)resultsDelegate;
 {
   PTObjectRequestInfo *info = [[[PTObjectRequestInfo alloc] initWithMethod:HRRequestMethodDelete] autorelease];
   info.resultsDelegate = resultsDelegate;

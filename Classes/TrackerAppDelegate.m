@@ -9,7 +9,7 @@
 #import "TrackerAppDelegate.h"
 #import "TrackerViewController.h"
 #import "CoreDataManager.h"
-#import "PTSyncManager.h"
+#import "CRSyncManager.h"
 #import "PTObject.h"
 #import "PTProject.h"
 
@@ -34,7 +34,7 @@ NSString *const PTTrackerSynchingObjectContext = @"TrackerSynchingObjectContext"
     registerNewManagedObjectContextForKey:PTTrackerSynchingObjectContext 
                                 isDefault:NO];
   
-  syncManager = [[PTSyncManager alloc] initWithManagedObjectContext:syncContext];
+  syncManager = [[CRSyncManager alloc] initWithManagedObjectContext:syncContext];
   [syncManager observeChangesToManagedObjectContext:self.coreDataManager.defaultManagedObjectContext];
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncManagerWillSync:) name:PTSyncManagerWillSyncNotification object:self.syncManager];

@@ -10,7 +10,7 @@
 #import "NSArray+NSIndexPathLookup.h"
 #import "NSManagedObjectContext+Helpers.h"
 #import "PTProject.h"
-#import "PTSyncManager.h"
+#import "CRSyncManager.h"
 #import "NewProjectController.h"
 #import "EditProjectController.h"
 

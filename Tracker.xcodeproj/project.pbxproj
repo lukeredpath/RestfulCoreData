@@ -23,8 +23,8 @@
 		A339B77C1153FDCC00CA2BB5 /* NewProjectView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A339B77B1153FDCC00CA2BB5 /* NewProjectView.xib */; };
 		A3D1CAAE115556D1009A12AD /* EditProjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D1CAAD115556D1009A12AD /* EditProjectController.m */; };
 		A3D1CE1E11569847009A12AD /* PTObjectRequestInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D1CE1D11569847009A12AD /* PTObjectRequestInfo.m */; };
-		A3D1CEDA1156C06E009A12AD /* PTSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D1CED91156C06E009A12AD /* PTSyncManager.m */; };
-		A3D1CEE01156C0A4009A12AD /* PTManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D1CEDF1156C0A4009A12AD /* PTManagedObject.m */; };
+		A3D1CEDA1156C06E009A12AD /* CRSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D1CED91156C06E009A12AD /* CRSyncManager.m */; };
+		A3D1CEE01156C0A4009A12AD /* CRManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = A3D1CEDF1156C0A4009A12AD /* CRManagedObject.m */; };
 		A3EDBE4E1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBE4D1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m */; };
 		A3EDBF7611528281004DA6AB /* UIApplication+Directories.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBF7511528281004DA6AB /* UIApplication+Directories.m */; };
 		A3EDBF791152828D004DA6AB /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A3EDBF781152828D004DA6AB /* CoreDataManager.m */; };
@@ -48,7 +48,7 @@
 		8D1107310486CEB800E47090 /* Tracker-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tracker-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A339B5A71153DD6400CA2BB5 /* PTProject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTProject.h; sourceTree = "<group>"; };
 		A339B5A81153DD6400CA2BB5 /* PTProject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTProject.m; sourceTree = "<group>"; };
-		A339B5A91153DD6400CA2BB5 /* PTResultsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTResultsDelegate.h; sourceTree = "<group>"; };
+		A339B5A91153DD6400CA2BB5 /* CRResultsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRResultsDelegate.h; sourceTree = "<group>"; };
 		A339B5AC1153DD6400CA2BB5 /* PTObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTObject.h; sourceTree = "<group>"; };
 		A339B5AD1153DD6400CA2BB5 /* PTObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTObject.m; sourceTree = "<group>"; };
 		A339B6841153F23C00CA2BB5 /* NSManagedObjectContext+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+Helpers.h"; sourceTree = "<group>"; };
@@ -58,16 +58,16 @@
 		A339B7761153FD6000CA2BB5 /* NewProjectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewProjectController.h; sourceTree = "<group>"; };
 		A339B7771153FD6000CA2BB5 /* NewProjectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewProjectController.m; sourceTree = "<group>"; };
 		A339B77B1153FDCC00CA2BB5 /* NewProjectView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewProjectView.xib; sourceTree = "<group>"; };
-		A3D1C9CA11554CD1009A12AD /* PTSynchronizedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTSynchronizedObject.h; sourceTree = "<group>"; };
-		A3D1C9D211554D00009A12AD /* PTRemoteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTRemoteObject.h; sourceTree = "<group>"; };
+		A3D1C9CA11554CD1009A12AD /* CRSynchronizedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRSynchronizedObject.h; sourceTree = "<group>"; };
+		A3D1C9D211554D00009A12AD /* CRRemoteObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRRemoteObject.h; sourceTree = "<group>"; };
 		A3D1CAAC115556D1009A12AD /* EditProjectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditProjectController.h; sourceTree = "<group>"; };
 		A3D1CAAD115556D1009A12AD /* EditProjectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditProjectController.m; sourceTree = "<group>"; };
 		A3D1CE1C11569847009A12AD /* PTObjectRequestInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTObjectRequestInfo.h; sourceTree = "<group>"; };
 		A3D1CE1D11569847009A12AD /* PTObjectRequestInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTObjectRequestInfo.m; sourceTree = "<group>"; };
-		A3D1CED81156C06E009A12AD /* PTSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTSyncManager.h; sourceTree = "<group>"; };
-		A3D1CED91156C06E009A12AD /* PTSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTSyncManager.m; sourceTree = "<group>"; };
-		A3D1CEDE1156C0A4009A12AD /* PTManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTManagedObject.h; sourceTree = "<group>"; };
-		A3D1CEDF1156C0A4009A12AD /* PTManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTManagedObject.m; sourceTree = "<group>"; };
+		A3D1CED81156C06E009A12AD /* CRSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRSyncManager.h; sourceTree = "<group>"; };
+		A3D1CED91156C06E009A12AD /* CRSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRSyncManager.m; sourceTree = "<group>"; };
+		A3D1CEDE1156C0A4009A12AD /* CRManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRManagedObject.h; sourceTree = "<group>"; };
+		A3D1CEDF1156C0A4009A12AD /* CRManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRManagedObject.m; sourceTree = "<group>"; };
 		A3EDBE4C1151CB60004DA6AB /* NSArray+NSIndexPathLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+NSIndexPathLookup.h"; sourceTree = "<group>"; };
 		A3EDBE4D1151CB60004DA6AB /* NSArray+NSIndexPathLookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+NSIndexPathLookup.m"; sourceTree = "<group>"; };
 		A3EDBF7411528281004DA6AB /* UIApplication+Directories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Directories.h"; sourceTree = "<group>"; };
@@ -188,9 +188,9 @@
 		A3D1C9C911554CC6009A12AD /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				A339B5A91153DD6400CA2BB5 /* PTResultsDelegate.h */,
-				A3D1C9CA11554CD1009A12AD /* PTSynchronizedObject.h */,
-				A3D1C9D211554D00009A12AD /* PTRemoteObject.h */,
+				A339B5A91153DD6400CA2BB5 /* CRResultsDelegate.h */,
+				A3D1C9CA11554CD1009A12AD /* CRSynchronizedObject.h */,
+				A3D1C9D211554D00009A12AD /* CRRemoteObject.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -198,10 +198,10 @@
 		A3D1CED11156BFF3009A12AD /* CoreRemote */ = {
 			isa = PBXGroup;
 			children = (
-				A3D1CEDE1156C0A4009A12AD /* PTManagedObject.h */,
-				A3D1CEDF1156C0A4009A12AD /* PTManagedObject.m */,
-				A3D1CED81156C06E009A12AD /* PTSyncManager.h */,
-				A3D1CED91156C06E009A12AD /* PTSyncManager.m */,
+				A3D1CEDE1156C0A4009A12AD /* CRManagedObject.h */,
+				A3D1CEDF1156C0A4009A12AD /* CRManagedObject.m */,
+				A3D1CED81156C06E009A12AD /* CRSyncManager.h */,
+				A3D1CED91156C06E009A12AD /* CRSyncManager.m */,
 				A3D1C9C911554CC6009A12AD /* Protocols */,
 			);
 			path = CoreRemote;
@@ -300,8 +300,8 @@
 				A339B7781153FD6000CA2BB5 /* NewProjectController.m in Sources */,
 				A3D1CAAE115556D1009A12AD /* EditProjectController.m in Sources */,
 				A3D1CE1E11569847009A12AD /* PTObjectRequestInfo.m in Sources */,
-				A3D1CEDA1156C06E009A12AD /* PTSyncManager.m in Sources */,
-				A3D1CEE01156C0A4009A12AD /* PTManagedObject.m in Sources */,
+				A3D1CEDA1156C06E009A12AD /* CRSyncManager.m in Sources */,
+				A3D1CEE01156C0A4009A12AD /* CRManagedObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,7 +351,7 @@
 					"-lhttpriot",
 				);
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1.2;
+				SDKROOT = iphoneos3.1.3;
 			};
 			name = Debug;
 		};
@@ -372,7 +372,7 @@
 					"-lhttpriot",
 				);
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1.2;
+				SDKROOT = iphoneos3.1.3;
 			};
 			name = Release;
 		};

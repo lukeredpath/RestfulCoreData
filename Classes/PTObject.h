@@ -7,19 +7,17 @@
 //
 
 #import <HTTPRiot/HRRestModel.h>
-#import "PTResultsDelegate.h"
-#import "PTSynchronizedObject.h"
-#import "PTRemoteObject.h"
+#import "CRSynchronizedObject.h"
 
 #pragma mark -
 
-@interface PTObject : HRRestModel <PTSynchronizedObject> {
+@interface PTObject : HRRestModel <CRSynchronizedObject> {
   NSString *remoteId;
-  PTManagedObject *managedObject;
+  CRManagedObject *managedObject;
   NSString *entityName;
 }
 @property (nonatomic, copy) NSString *remoteId;
-@property (nonatomic, retain) PTManagedObject *managedObject;
+@property (nonatomic, retain) CRManagedObject *managedObject;
 @property (nonatomic, copy) NSManagedObjectID *managedObjectID;
 @property (nonatomic, readonly) NSString *entityName;
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class TrackerViewController;
-@class PTSyncManager;
+@class CRSyncManager;
 @class CoreDataManager;
 
 extern NSString *const PTTrackerSynchingObjectContext;
@@ -19,14 +19,14 @@ extern NSString *const PTTrackerSynchingObjectContext;
   UINavigationController *navigationController;
   TrackerViewController *viewController;
   CoreDataManager *coreDataManager;
-  PTSyncManager *syncManager;
+  CRSyncManager *syncManager;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 @property (nonatomic, retain) IBOutlet TrackerViewController *viewController;
 @property (nonatomic, retain) IBOutlet CoreDataManager *coreDataManager;
-@property (nonatomic, retain) PTSyncManager *syncManager;
+@property (nonatomic, retain) CRSyncManager *syncManager;
 
 @end
 
