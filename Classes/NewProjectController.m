@@ -62,10 +62,8 @@
 {
   PTProject *project = [[PTProject alloc] init];
   project.name = _textField.text;
-  project.account = @"LJR Software Ltd"; // TODO, provide a form for this
 
   [project initializeInManagedObjectContext:self.managedObjectContext];
-  
   [self.managedObjectContext save:nil];
   [self.navigationController popViewControllerAnimated:YES];
 }
