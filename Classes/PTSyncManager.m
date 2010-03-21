@@ -36,7 +36,7 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
 
 - (void)observeChangesToManagedObjectContext:(NSManagedObjectContext *)context;
 {
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidUpdate:) name:NSManagedObjectContextDidSaveNotification object:context];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:context];
 }
 
 - (void)synchronizeFromRemote:(Class<PTRemoteObject>)remoteModelKlass;
@@ -50,14 +50,16 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
  is observing are updated. This will typically be the main context being used
  by the app on the main thread.
 */
-- (void)managedObjectContextDidUpdate:(NSNotification *)note;
+- (void)otherManagedObjectContextDidSave:(NSNotification *)note;
 {
+  [self.managedObjectContext mergeChangesFromContextDidSaveNotification:note];
+  
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerWillSyncNotification object:self];
   
   // we need to sync any new and updated objects up to the server
   NSSet *insertedObjects = [note.userInfo objectForKey:NSInsertedObjectsKey];
   NSSet *updatedObjects  = [note.userInfo objectForKey:NSUpdatedObjectsKey];
-
+  
   for (PTManagedObject *managedObject in [insertedObjects setByAddingObjectsFromSet:updatedObjects]) {
     if (managedObject.remoteObject.remoteId == nil) {
       [managedObject.remoteObject createRemote:self];
@@ -67,18 +69,21 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   }
 }
 
+#pragma mark -
 #pragma mark PTResultsDelegate methods
 
-- (void)remoteModel:(Class<PTRemoteObject>)remoteModelKlass didFinishLoading:(NSArray *)results;
+- (void)remoteModel:(id)modelKlass didFetch:(NSArray *)results
 {
-  NSString *entityName = [remoteModelKlass entityName];
+  NSString *entityName = [modelKlass entityName];
   NSEntityDescription *entity = [managedObjectContext entityDescriptionForName:entityName];
+  
+  [managedObjectContext fetchAllOfEntity:entity error:nil];
   
   // TODO it seems wrong that remoteId is hardcoded here, what if I want to use UUID instead?
   NSPredicate *matchingIdPredicate = [NSPredicate predicateWithFormat:@"remoteId in %@", [results valueForKeyPath:@"remoteId"]];
   NSSet *managedObjectsForResultsSet = [[NSSet alloc] initWithArray:
     [managedObjectContext fetchAllOfEntity:entity predicate:matchingIdPredicate error:nil]];
-  
+
   // delete all objects that no longer exist on the server
   NSPredicate *hasRemoteIdPredicate = [NSPredicate predicateWithFormat:@"remoteId <> NIL"];
   NSMutableSet *allObjectSet = [[NSMutableSet alloc] initWithArray:
@@ -99,10 +104,10 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   
   for (PTObject *record in results) {
     PTManagedObject *managedObject = [managedObjectsByRemoteId objectForKey:record.remoteId];
-    
-    [record setManagedObject:managedObject isMaster:NO];
-    
-    if (record.managedObject == nil) {
+   
+    if (managedObject != nil) {
+      [record syncManagedObjectToSelf:managedObject];
+    } else {
       [record initializeInManagedObjectContext:self.managedObjectContext];
     }
   }
@@ -110,18 +115,30 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   NSPredicate *localOnlyPredicate = [NSPredicate predicateWithFormat:@"remoteId = NIL"];
   NSArray *localObjects = [managedObjectContext fetchAllOfEntity:entity predicate:localOnlyPredicate error:nil];
   for (PTManagedObject *object in localObjects) {
-    id<PTRemoteObject> modelInstance = [[(Class)remoteModelKlass alloc] initWithManagedObject:object];
+    id<PTRemoteObject> modelInstance = [[(Class)modelKlass alloc] initWithManagedObject:object];
     [modelInstance createRemote:self];
   }
   
   [managedObjectContext save:nil];
-  
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerDidSyncNotification object:self];
 }
 
-- (void)remoteModel:(id)modelKlass didFinishUpdating:(id)updatedObject;
+- (void)remoteModel:(id)modelKlass didCreate:(id<PTRemoteObject>)remoteObject;
 {
-  [managedObjectContext save:nil];
+  [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerDidSyncNotification object:self];
+  
+  id<PTSynchronizedObject>synchronizedObject = (id<PTSynchronizedObject>)remoteObject;
+  
+  // we now need to get the faulted object in the sync context; we can't use the 
+  // managedObject from the remoteObject directly as it belongs to the main thread context.
+  PTManagedObject *managedObject = (PTManagedObject *)[self.managedObjectContext objectWithID:synchronizedObject.managedObjectID];
+  [synchronizedObject syncManagedObjectToSelf:managedObject];
+  [self.managedObjectContext save:nil];
+}
+
+- (void)remoteModel:(id)modelKlass didUpdate:(id<PTRemoteObject>)remoteObject;
+{
+  [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerDidSyncNotification object:self];
 }
 
 @end
