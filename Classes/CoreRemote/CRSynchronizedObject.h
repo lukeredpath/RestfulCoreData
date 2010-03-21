@@ -10,6 +10,8 @@
 
 @protocol CRSynchronizedObject <NSObject>
 
+- (id)remoteId;
+
 /*
  * Used to create a new instance from a local managed object.
  * 
