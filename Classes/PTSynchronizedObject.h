@@ -19,9 +19,8 @@
 - (id)initWithManagedObject:(PTManagedObject *)object;
 
 /* 
- * Used to initialize an instance in an NSManagedObjectContext. Will
- * create a new managed object in the given context and initialize its properties 
- * with data from the instance using setManagedObject:isMaster with isMaster:NO.
+ * Initializes a managed object in an NSManagedObjectContext, with the object's
+ * own property data.
  *
  * Will generally be called in one of the following situations:
  * - The object has been fetched from the remote server and doesn't exist locally.
@@ -54,5 +53,10 @@
  * Sets the object's properties to the values from the managed object.
  */
 - (void)syncSelfToManagedObject:(PTManagedObject *)object;
+
+/*
+ * The NSManagedObjectID for this object's local representation
+ */
+- (NSManagedObjectID *)managedObjectID;
 
 @end
