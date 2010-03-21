@@ -117,7 +117,7 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
     CRManagedObject *managedObject = [managedObjectsByRemoteId objectForKey:remoteObject.remoteId];
    
     if (managedObject != nil) {
-      [remoteObject syncManagedObjectToSelf:managedObject];
+      [remoteObject syncManagedObjectWithSelf:managedObject];
     } else {
       [remoteObject initializeInManagedObjectContext:self.managedObjectContext];
     }
@@ -143,7 +143,7 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   // we now need to get the faulted object in the sync context; we can't use the 
   // managedObject from the remoteObject directly as it belongs to the main thread context.
   CRManagedObject *managedObject = (CRManagedObject *)[self.managedObjectContext objectWithID:synchronizedObject.managedObjectID];
-  [synchronizedObject syncManagedObjectToSelf:managedObject];
+  [synchronizedObject syncManagedObjectWithSelf:managedObject];
   [self.managedObjectContext save:nil];
 }
 

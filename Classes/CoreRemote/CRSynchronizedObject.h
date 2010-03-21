@@ -49,12 +49,12 @@
  * matching properties. The base implementation only syncs the remote ID
  * property. Typically overridde by sub-classes to set their own unique properties. 
  */
-- (void)syncManagedObjectToSelf:(CRManagedObject *)object;
+- (void)syncManagedObjectWithSelf:(CRManagedObject *)object;
 
 /*
  * Sets the object's properties to the values from the managed object.
  */
-- (void)syncSelfToManagedObject:(CRManagedObject *)object;
+- (void)syncSelfWithManagedObject:(CRManagedObject *)object;
 
 /*
  * The NSManagedObjectID for this object's local representation

@@ -49,17 +49,17 @@
   return [NSString stringWithFormat:@"[PTProject id:%@ name:%@]", self.remoteId, self.name];
 }
 
-- (void)syncManagedObjectToSelf:(CRManagedObject *)object;
+- (void)syncManagedObjectWithSelf:(CRManagedObject *)object;
 {
-  [super syncManagedObjectToSelf:object];
+  [super syncManagedObjectWithSelf:object];
   
   [object setValue:self.name    forKey:@"name"];
   [object setValue:self.account forKey:@"account"];
 }
 
-- (void)syncSelfToManagedObject:(CRManagedObject *)object;
+- (void)syncSelfWithManagedObject:(CRManagedObject *)object;
 {
-  [super syncSelfToManagedObject:object];
+  [super syncSelfWithManagedObject:object];
   
   self.name    = [object valueForKey:@"name"];
   self.account = [object valueForKey:@"account"];

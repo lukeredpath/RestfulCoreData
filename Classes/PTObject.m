@@ -86,25 +86,25 @@
   self.managedObject = object;
   
   if (isMaster) {
-    [self syncSelfToManagedObject:object];
+    [self syncSelfWithManagedObject:object];
   } else {
-    [self syncManagedObjectToSelf:object];
+    [self syncManagedObjectWithSelf:object];
   }
 }
 
 - (void)syncManagedObject;
 {
   if (self.managedObject) {
-    [self syncManagedObjectToSelf:self.managedObject];
+    [self syncManagedObjectWithSelf:self.managedObject];
   }
 }
 
-- (void)syncManagedObjectToSelf:(CRManagedObject *)object;
+- (void)syncManagedObjectWithSelf:(CRManagedObject *)object;
 {
   [object setValue:self.remoteId forKey:@"remoteId"];
 }
 
-- (void)syncSelfToManagedObject:(CRManagedObject *)object;
+- (void)syncSelfWithManagedObject:(CRManagedObject *)object;
 {
   self.remoteId = [object valueForKey:@"remoteId"];
 }
