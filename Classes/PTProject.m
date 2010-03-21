@@ -8,6 +8,7 @@
 
 #import "PTProject.h"
 #import "PTManagedObject.h"
+#import "PTResultsDelegate.h"
 
 @implementation PTProject
 
@@ -65,10 +66,6 @@
   self.remoteId = [[remoteData valueForKey:@"id"] valueForKey:@"content"];
   self.name     = [remoteData valueForKey:@"name"];
   self.account  = [remoteData valueForKey:@"account"];
-  
-  if (self.managedObject) {
-    [self syncManagedObjectToSelf:self.managedObject];
-  }
 }
 
 + (id)fetchRemote:(id<PTResultsDelegate>)resultsDelegate;
@@ -114,8 +111,10 @@
      
     if (project.remoteId == nil) { // this is a create, so we need to update the remote ID
       [project updateFromRemoteData:projectData];
-    }    
-    [resultsDelegate remoteModel:self didFinishUpdating:project];
+      [resultsDelegate remoteModel:self didCreate:project];
+    } else {
+      [resultsDelegate remoteModel:self didUpdate:project];
+    }
   } else {
     NSMutableArray *projects = [[NSMutableArray alloc] init];
     
@@ -125,7 +124,7 @@
       [project release];
     }
     
-    [(id<PTResultsDelegate>)object remoteModel:self didFinishLoading:projects];
+    [(id<PTResultsDelegate>)object remoteModel:self didFetch:projects];
     [projects release]; 
   }
 }

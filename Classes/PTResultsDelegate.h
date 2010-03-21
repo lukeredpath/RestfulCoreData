@@ -7,9 +7,12 @@
 //
 
 
-@protocol PTResultsDelegate
+@protocol PTRemoteObject;
 
+
+@protocol PTResultsDelegate
 @optional
-- (void)remoteModel:(id)modelKlass didFinishLoading:(NSArray *)results;
-- (void)remoteModel:(id)modelKlass didFinishUpdating:(id)updatedObject;
+- (void)remoteModel:(id)modelKlass didFetch:(NSArray *)results;
+- (void)remoteModel:(id)modelKlass didCreate:(id<PTRemoteObject>)remoteObject;
+- (void)remoteModel:(id)modelKlass didUpdate:(id<PTRemoteObject>)remoteObject;
 @end
