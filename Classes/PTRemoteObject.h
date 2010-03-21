@@ -6,8 +6,10 @@
 //  Copyright 2010 LJR Software Limited. All rights reserved.
 //
 
-@protocol PTRemoteObject <NSObject>
+@protocol PTResultsDelegate;
 
+
+@protocol PTRemoteObject <NSObject>
 + (NSString *)entityName;
 - (NSString *)entityName;
 - (id)remoteId;
@@ -16,5 +18,4 @@
 - (id)createRemote:(id<PTResultsDelegate>)resultsDelegate;
 - (id)updateRemote:(id<PTResultsDelegate>)resultsDelegate;
 - (id)deleteRemote:(id<PTResultsDelegate>)resultsDelegate;
-
 @end
