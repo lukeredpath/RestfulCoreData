@@ -115,7 +115,7 @@
 
 - (void)syncManagerDidSync:(NSNotification *)note;
 {
-  [managedObjectContext mergeChangesFromContextDidSaveNotification:note];
+  [managedObjectContext performSelectorOnMainThread:@selector(mergeChangesFromContextDidSaveNotification:) withObject:note waitUntilDone:NO];
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
