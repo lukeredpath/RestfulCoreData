@@ -174,7 +174,6 @@
 				A3D1C9C911554CC6009A12AD /* Protocols */,
 				A339B5A71153DD6400CA2BB5 /* PTProject.h */,
 				A339B5A81153DD6400CA2BB5 /* PTProject.m */,
-				A339B5A91153DD6400CA2BB5 /* PTResultsDelegate.h */,
 				A339B5AA1153DD6400CA2BB5 /* PTSyncManager.h */,
 				A339B5AB1153DD6400CA2BB5 /* PTSyncManager.m */,
 				A339B5AC1153DD6400CA2BB5 /* PTObject.h */,
@@ -188,6 +187,7 @@
 		A3D1C9C911554CC6009A12AD /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				A339B5A91153DD6400CA2BB5 /* PTResultsDelegate.h */,
 				A3D1C9CA11554CD1009A12AD /* PTSynchronizedObject.h */,
 				A3D1C9D211554D00009A12AD /* PTRemoteObject.h */,
 			);
