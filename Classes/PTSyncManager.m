@@ -34,6 +34,11 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   [super dealloc];
 }
 
+/*
+ The sync managed needs to observe changes to any other managed object context in the app
+ that may be used to change data, so it can detect those changes and update the remote
+ objects accordingly.
+ */
 - (void)observeChangesToManagedObjectContext:(NSManagedObjectContext *)context;
 {
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:context];
@@ -66,6 +71,11 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
     } else {
       [managedObject.remoteObject updateRemote:self];
     }
+  }
+  
+  // we also need to tell the server about any deleted objects
+  for (PTManagedObject *managedObject in [note.userInfo objectForKey:NSDeletedObjectsKey]) {
+    [managedObject.remoteObject deleteRemote:self];
   }
 }
 
@@ -139,6 +149,11 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
 - (void)remoteModel:(id)modelKlass didUpdate:(id<PTRemoteObject>)remoteObject;
 {
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerDidSyncNotification object:self];
+}
+
+- (void)remoteModel:(id)modelKlass didDelete:(id<PTRemoteObject>)remoteObject;
+{
+  
 }
 
 @end

@@ -15,4 +15,5 @@
 - (void)remoteModel:(id)modelKlass didFetch:(NSArray *)results;
 - (void)remoteModel:(id)modelKlass didCreate:(id<PTRemoteObject>)remoteObject;
 - (void)remoteModel:(id)modelKlass didUpdate:(id<PTRemoteObject>)remoteObject;
+- (void)remoteModel:(id)modelKlass didDelete:(id<PTRemoteObject>)remoteObject;
 @end
