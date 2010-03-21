@@ -114,7 +114,7 @@
   info.resultsDelegate = resultsDelegate;
   info.remoteObject = self;
   
-  return [[self class] deletePath:[NSString stringWithFormat:@"/projects/%@", remoteId] withOptions:nil object:resultsDelegate];
+  return [[self class] deletePath:[NSString stringWithFormat:@"/projects/%@", remoteId] withOptions:nil object:info];
 }
 
 #pragma mark -
@@ -140,12 +140,18 @@
       [requestInfo.resultsDelegate remoteModel:self didUpdate:requestInfo.remoteObject];
       break;
     }
-    case HRRequestMethodDelete:
-      [requestInfo.resultsDelegate remoteModel:self didDelete:requestInfo.remoteObject];
-      break;
     default:
       NSAssert(NO, @"Request info should always contain a valid HRRequestMethod");
       break;
+  }
+}
+
++ (void)restConnection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)response object:(id)object;
+{
+  PTObjectRequestInfo *requestInfo = (PTObjectRequestInfo *)object;
+  
+  if (response.statusCode == 200 && requestInfo.method == HRRequestMethodDelete) {
+    [requestInfo.resultsDelegate remoteModel:self didDelete:requestInfo.remoteObject];
   }
 }
 

@@ -153,7 +153,7 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
 
 - (void)remoteModel:(id)modelKlass didDelete:(id<PTRemoteObject>)remoteObject;
 {
-  
+  [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerDidSyncNotification object:self];
 }
 
 @end

@@ -172,4 +172,15 @@ static NSString *ProjectCellIdentifier = @"ProjectCellIdentifier";
   [editController release];
 }
 
+// implement swipe to delete support
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle 
+forRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+  if (editingStyle == UITableViewCellEditingStyleDelete) {
+    PTProject *project = [self objectAtIndexPath:indexPath];
+    [self.managedObjectContext deleteObject:(NSManagedObject *)project.managedObject];
+  }
+  [self.managedObjectContext save:nil];
+}
+
 @end
