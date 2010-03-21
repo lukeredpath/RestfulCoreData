@@ -8,7 +8,7 @@ To get up and running, you'll need the latest Rails 3 beta (to run the demo app)
     
 This will boot up a local server on port 3000, which the iPhone app is configured to use.
 
-You'll also need the latest version of the [HTTPRiot][1] library, which should be copied
+You'll also need a copy of [my fork][1] of the [HTTPRiot][2] library, which should be copied
 to ~/Library/SDKs.
 
 ## What is the point?
@@ -17,4 +17,5 @@ The point is to have a reusable means of synching a remote API to a local CoreDa
 
 I'm using the HTTPRiot to access the API as its an awesome library for interacting with JSON/XML REST APIs. There is a degree of coupling to its HRRestModel class at the moment but that can be refactored away; its not that important right now.
 
-[1]: http://labratrevenge.com/httpriot/docs/
+[1]: http://github.com/lukeredpath/httpriot/
+[2]: http://labratrevenge.com/httpriot/docs/
