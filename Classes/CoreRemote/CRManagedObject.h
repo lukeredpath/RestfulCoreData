@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PTObject.h"
 
-@interface PTManagedObject : NSManagedObject {
-  id<PTRemoteObject> remoteObject;
+@protocol CRRemoteObject;
+
+@interface CRManagedObject : NSManagedObject {
+  id<CRRemoteObject> remoteObject;
 }
-@property (nonatomic, retain) id<PTRemoteObject> remoteObject;
+@property (nonatomic, retain) id<CRRemoteObject> remoteObject;
 @end

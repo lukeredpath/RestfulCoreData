@@ -6,10 +6,10 @@
 //  Copyright 2010 LJR Software Limited. All rights reserved.
 //
 
-#import "PTManagedObject.h"
+#import "CRManagedObject.h"
 
 
-@implementation PTManagedObject
+@implementation CRManagedObject
 
 @synthesize remoteObject;
 

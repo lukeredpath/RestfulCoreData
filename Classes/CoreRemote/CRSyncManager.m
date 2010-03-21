@@ -6,16 +6,17 @@
 //  Copyright 2010 LJR Software Limited. All rights reserved.
 //
 
-#import "PTSyncManager.h"
+#import "CRSyncManager.h"
 #import "NSManagedObjectContext+Helpers.h"
 #import "NSManagedObjectContext+SimpleFetches.h"
-#import "PTManagedObject.h"
-#import "PTRemoteObject.h"
+#import "CRManagedObject.h"
+#import "CRRemoteObject.h"
+#import "CRSynchronizedObject.h"
 
 NSString *const PTSyncManagerWillSyncNotification = @"PTSyncManagerWillSyncNotification";
 NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotification";
 
-@implementation PTSyncManager
+@implementation CRSyncManager
 
 @synthesize managedObjectContext;
 
@@ -44,7 +45,7 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(otherManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:context];
 }
 
-- (void)synchronizeFromRemote:(Class<PTRemoteObject>)remoteModelKlass;
+- (void)synchronizeFromRemote:(Class<CRRemoteObject>)remoteModelKlass;
 {
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerWillSyncNotification object:self];
   [remoteModelKlass fetchRemote:self];
@@ -65,7 +66,7 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   NSSet *insertedObjects = [note.userInfo objectForKey:NSInsertedObjectsKey];
   NSSet *updatedObjects  = [note.userInfo objectForKey:NSUpdatedObjectsKey];
   
-  for (PTManagedObject *managedObject in [insertedObjects setByAddingObjectsFromSet:updatedObjects]) {
+  for (CRManagedObject *managedObject in [insertedObjects setByAddingObjectsFromSet:updatedObjects]) {
     if (managedObject.remoteObject.remoteId == nil) {
       [managedObject.remoteObject createRemote:self];
     } else {
@@ -74,7 +75,7 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   }
   
   // we also need to tell the server about any deleted objects
-  for (PTManagedObject *managedObject in [note.userInfo objectForKey:NSDeletedObjectsKey]) {
+  for (CRManagedObject *managedObject in [note.userInfo objectForKey:NSDeletedObjectsKey]) {
     [managedObject.remoteObject deleteRemote:self];
   }
 }
@@ -112,20 +113,20 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
     [managedObjectsByRemoteId setObject:object forKey:[object valueForKey:@"remoteId"]];
   }
   
-  for (PTObject *record in results) {
-    PTManagedObject *managedObject = [managedObjectsByRemoteId objectForKey:record.remoteId];
+  for (id<CRSynchronizedObject> remoteObject in results) {
+    CRManagedObject *managedObject = [managedObjectsByRemoteId objectForKey:remoteObject.remoteId];
    
     if (managedObject != nil) {
-      [record syncManagedObjectToSelf:managedObject];
+      [remoteObject syncManagedObjectToSelf:managedObject];
     } else {
-      [record initializeInManagedObjectContext:self.managedObjectContext];
+      [remoteObject initializeInManagedObjectContext:self.managedObjectContext];
     }
   }
   // now post all local only objects back up to the server
   NSPredicate *localOnlyPredicate = [NSPredicate predicateWithFormat:@"remoteId = NIL"];
   NSArray *localObjects = [managedObjectContext fetchAllOfEntity:entity predicate:localOnlyPredicate error:nil];
-  for (PTManagedObject *object in localObjects) {
-    id<PTRemoteObject> modelInstance = [[(Class)modelKlass alloc] initWithManagedObject:object];
+  for (CRManagedObject *object in localObjects) {
+    id<CRRemoteObject> modelInstance = [[(Class)modelKlass alloc] initWithManagedObject:object];
     [modelInstance createRemote:self];
   }
   
@@ -133,25 +134,25 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerDidSyncNotification object:self];
 }
 
-- (void)remoteModel:(id)modelKlass didCreate:(id<PTRemoteObject>)remoteObject;
+- (void)remoteModel:(id)modelKlass didCreate:(id<CRRemoteObject>)remoteObject;
 {
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerDidSyncNotification object:self];
   
-  id<PTSynchronizedObject>synchronizedObject = (id<PTSynchronizedObject>)remoteObject;
+  id<CRSynchronizedObject>synchronizedObject = (id<CRSynchronizedObject>)remoteObject;
   
   // we now need to get the faulted object in the sync context; we can't use the 
   // managedObject from the remoteObject directly as it belongs to the main thread context.
-  PTManagedObject *managedObject = (PTManagedObject *)[self.managedObjectContext objectWithID:synchronizedObject.managedObjectID];
+  CRManagedObject *managedObject = (CRManagedObject *)[self.managedObjectContext objectWithID:synchronizedObject.managedObjectID];
   [synchronizedObject syncManagedObjectToSelf:managedObject];
   [self.managedObjectContext save:nil];
 }
 
-- (void)remoteModel:(id)modelKlass didUpdate:(id<PTRemoteObject>)remoteObject;
+- (void)remoteModel:(id)modelKlass didUpdate:(id<CRRemoteObject>)remoteObject;
 {
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerDidSyncNotification object:self];
 }
 
-- (void)remoteModel:(id)modelKlass didDelete:(id<PTRemoteObject>)remoteObject;
+- (void)remoteModel:(id)modelKlass didDelete:(id<CRRemoteObject>)remoteObject;
 {
   [[NSNotificationCenter defaultCenter] postNotificationName:PTSyncManagerDidSyncNotification object:self];
 }

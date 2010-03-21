@@ -7,18 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "PTResultsDelegate.h"
-#import "PTObject.h"
+#import "CRResultsDelegate.h"
+
+@protocol CRRemoteObject;
 
 extern NSString *const PTSyncManagerWillSyncNotification;
 extern NSString *const PTSyncManagerDidSyncNotification;
 
-@interface PTSyncManager : NSObject <PTResultsDelegate> {
+@interface CRSyncManager : NSObject <CRResultsDelegate> {
   NSManagedObjectContext *managedObjectContext;
 }
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)context;
 - (void)observeChangesToManagedObjectContext:(NSManagedObjectContext *)context;
-- (void)synchronizeFromRemote:(Class<PTRemoteObject>)remoteModelKlass;
+- (void)synchronizeFromRemote:(Class<CRRemoteObject>)remoteModelKlass;
 @end
