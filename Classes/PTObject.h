@@ -20,5 +20,6 @@
 }
 @property (nonatomic, copy) NSString *remoteId;
 @property (nonatomic, retain) PTManagedObject *managedObject;
+@property (nonatomic, copy) NSManagedObjectID *managedObjectID;
 @property (nonatomic, readonly) NSString *entityName;
 @end

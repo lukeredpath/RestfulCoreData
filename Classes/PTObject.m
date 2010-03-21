@@ -13,6 +13,7 @@
 
 @synthesize remoteId;
 @synthesize managedObject;
+@dynamic managedObjectID;
 @synthesize entityName;
 
 + (void)initialize {
@@ -70,6 +71,11 @@
     managedObject = [object retain];
     managedObject.remoteObject = (id<PTRemoteObject>)self;
   }
+}
+
+- (NSManagedObjectID *)managedObjectID;
+{
+  return self.managedObject.objectID;
 }
 
 #pragma mark -
