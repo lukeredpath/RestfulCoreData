@@ -19,7 +19,7 @@
 + (void)initialize {
   [self setDelegate:self];
   [self setBaseURL:[NSURL URLWithString:@"http://localhost:3000/"]];
-  [self setFormat:HRDataFormatXML];
+  [self setFormat:HRDataFormatJSON];
 }
 
 + (NSString *)entityName;
@@ -29,6 +29,7 @@
 
 - (void)dealloc;
 {
+  [remoteId release];
   [entityName release];
   [super dealloc];
 }

@@ -15,6 +15,7 @@
 }
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *account;
+@property (nonatomic, readonly) NSDictionary *attributes;
 
 - (id)initWithRemoteDictionary:(NSDictionary *)dictionary;
 @end

@@ -67,10 +67,10 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   NSSet *updatedObjects  = [note.userInfo objectForKey:NSUpdatedObjectsKey];
   
   for (CRManagedObject *managedObject in [insertedObjects setByAddingObjectsFromSet:updatedObjects]) {
-    if (managedObject.remoteObject.remoteId == nil) {
-      [managedObject.remoteObject createRemote:self];
-    } else {
+    if (managedObject.remoteObject.remoteId) {
       [managedObject.remoteObject updateRemote:self];
+    } else {
+      [managedObject.remoteObject createRemote:self];
     }
   }
   
@@ -115,7 +115,7 @@ NSString *const PTSyncManagerDidSyncNotification  = @"PTSyncManagerDidSyncNotifi
   
   for (id<CRSynchronizedObject> remoteObject in results) {
     CRManagedObject *managedObject = [managedObjectsByRemoteId objectForKey:remoteObject.remoteId];
-   
+
     if (managedObject != nil) {
       [remoteObject syncManagedObjectWithSelf:managedObject];
     } else {

@@ -137,7 +137,7 @@ static NSString *ProjectCellIdentifier = @"ProjectCellIdentifier";
   PTProject *project = [self objectAtIndexPath:indexPath];
 
   cell.textLabel.text = project.name;
-  cell.detailTextLabel.text = project.remoteId;
+  cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", project.remoteId];
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   
   return cell;

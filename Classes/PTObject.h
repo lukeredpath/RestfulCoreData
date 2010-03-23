@@ -12,11 +12,11 @@
 #pragma mark -
 
 @interface PTObject : HRRestModel <CRSynchronizedObject> {
-  NSString *remoteId;
+  NSDecimalNumber *remoteId;
   CRManagedObject *managedObject;
   NSString *entityName;
 }
-@property (nonatomic, copy) NSString *remoteId;
+@property (nonatomic, retain) NSDecimalNumber *remoteId;
 @property (nonatomic, retain) CRManagedObject *managedObject;
 @property (nonatomic, copy) NSManagedObjectID *managedObjectID;
 @property (nonatomic, readonly) NSString *entityName;

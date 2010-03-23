@@ -10,6 +10,7 @@
 #import "CRManagedObject.h"
 #import "CRResultsDelegate.h"
 #import "PTObjectRequestInfo.h"
+#import <HTTPRiot/JSON.h>
 
 @interface PTProject ()
 + (NSArray *)newCollectionFromRemoteCollection:(NSArray *)remoteCollection;
@@ -21,10 +22,10 @@
 
 @synthesize name;
 @synthesize account;
+@dynamic attributes;
 
 - (void)dealloc;
 {
-  [remoteId release];
   [name release];
   [account release];
   [managedObject release];
@@ -65,12 +66,21 @@
   self.account = [object valueForKey:@"account"];
 }
 
+- (NSDictionary *)attributes;
+{
+  NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+  [attributes setValue:self.name    forKey:@"name"];
+  [attributes setValue:self.account forKey:@"account"];
+  
+  return [NSDictionary dictionaryWithObject:attributes forKey:@"project"];
+}
+
 #pragma mark -
 #pragma mark PTRemoteObject protocol methods
 
 - (void)updateFromRemoteData:(NSDictionary *)remoteData;
 {
-  self.remoteId = [[remoteData valueForKey:@"id"] valueForKey:@"content"];
+  self.remoteId = [remoteData valueForKey:@"id"];
   self.name     = [remoteData valueForKey:@"name"];
   self.account  = [remoteData valueForKey:@"account"];
 }
@@ -88,11 +98,10 @@
   PTObjectRequestInfo *info = [[[PTObjectRequestInfo alloc] initWithMethod:HRRequestMethodPost] autorelease];
   info.resultsDelegate = resultsDelegate;
   info.remoteObject = self;
-  
-  NSString *XMLRepresentation = [NSString stringWithFormat:@"<project><name>%@</name></project>", self.name];
-  NSDictionary *requestData = [NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"];
-  
-  return [[self class] postPath:@"/projects" withOptions:requestData object:info];  
+
+  return [[self class] postPath:@"/projects" 
+                    withOptions:[NSDictionary dictionaryWithObject:[self.attributes JSONRepresentation] forKey:@"body"]
+                         object:info];  
 }
 
 - (id)updateRemote:(id<CRResultsDelegate>)resultsDelegate;
@@ -101,10 +110,9 @@
   info.resultsDelegate = resultsDelegate;
   info.remoteObject = self;
   
-  NSString *XMLRepresentation = [NSString stringWithFormat:@"<project><name>%@</name></project>", self.name];
-  NSDictionary *requestData = [NSDictionary dictionaryWithObject:XMLRepresentation forKey:@"body"];
-  
-  return [[self class] putPath:[NSString stringWithFormat:@"/projects/%@", self.remoteId] withOptions:requestData object:info];  
+  return [[self class] putPath:[NSString stringWithFormat:@"/projects/%@", self.remoteId] 
+                   withOptions:[NSDictionary dictionaryWithObject:[self.attributes JSONRepresentation] forKey:@"body"]
+                        object:info];  
   
 }
 
@@ -114,7 +122,7 @@
   info.resultsDelegate = resultsDelegate;
   info.remoteObject = self;
   
-  return [[self class] deletePath:[NSString stringWithFormat:@"/projects/%@", remoteId] withOptions:nil object:info];
+  return [[self class] deletePath:[NSString stringWithFormat:@"/projects/%@", self.remoteId] withOptions:nil object:info];
 }
 
 #pragma mark -
@@ -126,13 +134,13 @@
   
   switch (requestInfo.method) {
     case HRRequestMethodGet: {
-      NSArray *projects = [self newCollectionFromRemoteCollection:[resource valueForKey:@"projects"]];
+      NSArray *projects = [self newCollectionFromRemoteCollection:resource];
       [requestInfo.resultsDelegate remoteModel:self didFetch:projects];
       [projects release];
       break;
     }
     case HRRequestMethodPost: {
-      [requestInfo.remoteObject updateFromRemoteData:[resource valueForKey:@"project"]];
+      [requestInfo.remoteObject updateFromRemoteData:resource];
       [requestInfo.resultsDelegate remoteModel:self didCreate:requestInfo.remoteObject];
       break;
     }
